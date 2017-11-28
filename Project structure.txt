@@ -1,0 +1,70 @@
+Classes:
+- User
+- PublicUser extends User
+- Artist extends PublicUser
+	- First name
+	- Last name
+	- Stage name
+	- Member of <Band>
+	- List of <Music>
+	- Description
+	- Location <Address>
+	- List of <Genre>
+	- List of <Instrument>
+- Band extends PublicUser
+	- Name
+	- <Artist> Members
+	- List of <Music>
+	- Description
+	- Location <Address>
+	- List of <Genre>
+- PrivateUser extends User
+	- First name
+	- Last name
+	- List of shortcuts to <PublicUser>
+	- List of <PublicUser> that I belong to
+- Place
+	- Name
+	- Location <Address>
+	- Number of votes
+	- Description
+- Message
+	- Id
+	- Date
+	- Text
+	- Sender <User>
+	- <Conversation>
+- Conversation
+	- List of two <User>
+	- Topic
+- Show
+	- Name
+	- Performers <User>
+	- Start date
+	- End date
+	- Place <Place>
+	- Description
+- Music
+	- Link
+- Genre
+	- Name
+- Instrument
+	- Name
+- Address
+	- Street
+	- Number
+	- City
+	- Zip code
+- Calendar
+	- Ordered list of <Show>
+
+
+Features:
+- Find a show.
+- Find a <PublicUser>.
+- Create a show.
+- Start a conversation.
+- Send messages.
+- Cancel shows.
+- Create/manage a profile of <PublicUser>.
+- See the calendar.
