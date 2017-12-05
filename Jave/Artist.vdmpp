@@ -1,0 +1,22 @@
+class Artist
+types
+-- TODO Define types here
+values
+-- TODO Define values here
+instance variables
+	private firstName : seq of char := [];
+	private lastName : seq of char := [];
+	private stageName : seq of char := [];
+	private memberOf : seq of Band := [];
+	private musics : seq of Music := [];
+	private location : Address;
+	private genres : seq of Genre := [];
+	private instruments : seq of Instrument := [];
+	private description : seq of char := []; 
+operations
+-- TODO Define operations here
+functions
+-- TODO Define functiones here
+traces
+-- TODO Define Combinatorial Test Traces here
+end Artist

@@ -1,0 +1,18 @@
+class Message
+types
+-- TODO Define types here
+values
+-- TODO Define values here
+instance variables
+	private id : nat;
+	private date : seq of char := [];
+	private text : seq of char := [];
+	private sender : User;
+	private conversation : Conversation;
+operations
+-- TODO Define operations here
+functions
+-- TODO Define functiones here
+traces
+-- TODO Define Combinatorial Test Traces here
+end Message
