@@ -1,4 +1,4 @@
-class PrivateUser
+class PrivateUser is subclass of User
 types
 -- TODO Define types here
 values

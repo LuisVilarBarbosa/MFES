@@ -1,4 +1,4 @@
-class Band
+class Band is subclass of PublicUser
 types
 -- TODO Define types here
 values

@@ -1,4 +1,4 @@
-class Artist
+class Artist is subclass of PublicUser
 types
 -- TODO Define types here
 values
