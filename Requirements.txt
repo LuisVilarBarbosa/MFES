@@ -1,0 +1,22 @@
+R001 - As an artist, I want to be able to define my public profile.
+R002 - As an user, I want to be able to find artists.
+R003 - As an user, I want to be able to see the profile of an artist.
+R004 - As an user, I want to be able to find the band of an artist.
+R005 - As an user, I want to discover the genders of an artist.
+R006 - As an user, I want to be able to find the instruments that an artist plays.
+R007 - As an user, I want to be able to find bands.
+R008 - As an user, I want to be able to find the members of a band.
+R009 - As an user, I want to be able to see the profile of a band.
+R010 - As an user, I want to discover the genders of a band.
+R011 - As an user, I want to be able to access a calendar with the shows already scheduled.
+R012 - As an user, I want to be able to have a conversation with other users (an user cannot have a conversation with itself).
+R013 - As an user, I want to know the date of a message.
+R014 - As an user, I want to be able to click on a link to a music.
+R015 - As an user, I want to know the date of a message.
+R016 - As an user, I want to be able to find places where I can listen to music.
+R017 - As an user, I want to know the date of a message.
+R018 - As an user, I want to be able to see information related to a place and its rating.
+R019 - As an user, I want to easily go to my favorite users.
+R020 - As a private user, I want to easily go to my public users.
+R021 - As a user, I want to be able to find shows and know some information about it as the performers, date, description and location.
+R022 - As a user, I want to define the profile of my bands.
