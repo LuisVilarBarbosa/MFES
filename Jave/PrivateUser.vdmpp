@@ -4,10 +4,10 @@ types
 values
 -- TODO Define values here
 instance variables
-	private firstName : seq of char := [];
-	private lastName : seq of char := [];
-	private favoriteUsers : seq of PublicUser := [];
-	private myPublicUsers : seq of PublicUser := [];
+	private firstName : seq of char;
+	private lastName : seq of char;
+	private favoriteUsers : seq of PublicUser;
+	private myPublicUsers : seq of PublicUser;
 operations
 -- TODO Define operations here
 functions

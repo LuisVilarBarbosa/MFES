@@ -4,7 +4,7 @@ types
 values
 -- TODO Define values here
 instance variables
-	private link : seq of char := [];
+	private link : seq of char;
 operations
 -- TODO Define operations here
 functions

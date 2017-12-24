@@ -4,8 +4,8 @@ types
 values
 -- TODO Define values here
 instance variables
-	private name : seq of char := [];
-	private description : seq of char := [];
+	private name : seq of char;
+	private description : seq of char;
 	private location : Address;
 	private votes : nat;
 operations

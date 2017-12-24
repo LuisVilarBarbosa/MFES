@@ -5,8 +5,8 @@ values
 -- TODO Define values here
 instance variables
 	private id : nat;
-	private date : seq of char := [];
-	private text : seq of char := [];
+	private date : seq of char;
+	private text : seq of char;
 	private sender : User;
 	private conversation : Conversation;
 operations

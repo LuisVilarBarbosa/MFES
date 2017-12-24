@@ -4,12 +4,12 @@ types
 values
 -- TODO Define values here
 instance variables
-	private name : seq of char := [];
-	private members : seq of Artist := [];
-	private musics : seq of Music := [];
-	private description : seq of char := [];
+	private name : seq of char;
+	private members : seq of Artist;
+	private musics : seq of Music;
+	private description : seq of char;
 	private location : Address;
-	private genres : seq of Genre := [];
+	private genres : seq of Genre;
 operations
 -- TODO Define operations here
 functions
