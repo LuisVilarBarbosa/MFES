@@ -1,22 +1,24 @@
 class Artist is subclass of PublicUser
 types
-	public String = seq of char;
+	public static Bands = set of Band;
+	public static Musics = set of Music;
 values
 -- TODO Define values here
 instance variables
-	private firstName : String;
-	private lastName : String;
-	private stageName : String;
-	private memberOf : set of Band;
-	private musics : seq of Music;
+	private firstName : Common`String1;
+	private lastName : Common`String1;
+	private stageName : Common`String := "";
+	private memberOf : Bands := {};
+	private musics : Musics := {};
 	private location : Address;
 	private genres : seq of Genre;
 	private instruments : seq of Instrument;
-	private description : String; 
+	private description : Common`String := "";
+	private static artists : set of Artist := {};
 operations
--- TODO Define operations here
-	public Artist : String * String * String * set of Band * seq of Music * Address * seq of Genre * seq of Instrument * String ==> Artist
+	public Artist : Common`String1 * Common`String1 * Common`String * Bands * Musics * Address * seq of Genre * seq of Instrument * Common`String ==> Artist
 	Artist(a,b,c,d,e,f,g,h,i) == (
+		--PublicUser();
 		firstName := a;
 		lastName := b;
 		stageName := c;
@@ -26,11 +28,12 @@ operations
 		genres := g;
 		instruments := h;
 		description := i;
+		artists := artists union {self};
 		return self;
 	);
 	-- post
 	
-	public SetStageName(n : String) == (
+	public SetStageName(n : Common`String) == (
 		stageName := n;
 	)
 	--pre 
@@ -47,6 +50,19 @@ operations
 	)
 	pre memberOf inter {b} = {b}
 	post memberOf inter {b} = {};
+	
+	/*public GetArtists() == (
+		return artists;
+	)
+	pre
+	post;*/
+	
+	public GetBand : () ==> Bands
+	GetBand() == (
+		return memberOf;
+	);
+	--pre
+	--post;
 functions
 -- TODO Define functiones here
 traces

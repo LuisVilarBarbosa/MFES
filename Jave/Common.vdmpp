@@ -1,14 +1,15 @@
-class Music
+class Common
 types
--- TODO Define types here
+	public static String = seq of char;
+	public static String1 = seq1 of char;
 values
 -- TODO Define values here
 instance variables
-	private link : Common`String1;
+-- TODO Define instance variables here
 operations
 -- TODO Define operations here
 functions
 -- TODO Define functiones here
 traces
 -- TODO Define Combinatorial Test Traces here
-end Music
+end Common

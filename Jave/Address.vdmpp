@@ -1,22 +1,25 @@
 -- could be a type
 class Address
 types
-	String = seq of char;
+-- TODO Define types here
 values
 -- TODO Define values here
 instance variables
-	private street : String;
-	private number : String;
-	private city : String;
-	private zipcode : String;
+	private street : Common`String := "";
+	private number : Common`String := "";
+	private city : Common`String := "";
+	private zipcode : Common`String := "";
 operations
- Address(s : String, n : String, c : String, zip : String) r : Address ==
- 	(street := s;
- 		number := n;
- 		city := c;
- 		zipcode := zip;
- 		return self)
- 	post street <> "" and number <> "" and city <> "" and zipcode <> "";
+	public Address : Common`String * Common`String * Common`String * Common`String ==> Address
+	Address(s,n,c,zip) == (
+		street := s;
+		number := n;
+		city := c;
+		zipcode := zip;
+		return self;
+	);
+	--pre street = "" and number = "" and city = "" and zipcode = ""
+	--post street <> "" and number <> "" and city <> "" and zipcode <> "";
 functions
 -- TODO Define functiones here
 traces

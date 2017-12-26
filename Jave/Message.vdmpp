@@ -1,18 +1,45 @@
 class Message
 types
--- TODO Define types here
+	public static Date ::
+		year : nat1
+		month : nat1
+		day : nat1
+		inv d == d.month  <= 12 and d.day <= DaysOfMonth(d.year, d.month);
 values
 -- TODO Define values here
 instance variables
-	private id : nat;
-	private date : seq of char;
-	private text : seq of char;
+	private static lastId : nat := 0;
+	private id : nat1;
+	private date : Date;
+	private text : Common`String1;
 	private sender : User;
 	private conversation : Conversation;
 operations
--- TODO Define operations here
+	public Message : Date * Common`String1 * User * Conversation ==> Message
+	Message(d,t,s,c) == (
+		let newId = lastId + 1 in (
+			id := newId;
+			lastId := newId;
+		);
+		date := d;
+		text := t;
+		sender := s;
+		conversation := c;
+	)
+	--pre
+	post id = lastId and date = d and text = t and sender = s and conversation = c;
 functions
--- TODO Define functiones here
+	public static DaysOfMonth : nat1 * nat1 +> nat1
+	DaysOfMonth(y,m) == (
+		if (m = 2) then (
+			if (y mod 400 = 0) or ((y mod 4 = 0) and (y mod 100 <> 0))
+				then 29
+			else 28
+		)
+		else 31 - (m - 1) mod 7 mod 2
+	)
+	pre m <= 12
+	post RESULT <= 31;
 traces
 -- TODO Define Combinatorial Test Traces here
 end Message
