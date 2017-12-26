@@ -10,13 +10,13 @@ instance variables
 	private stageName : Common`String := "";
 	private memberOf : Bands := {};
 	private musics : Musics := {};
-	private location : Address;
+	private location : Common`Address;
 	private genres : seq of Genre;
 	private instruments : seq of Instrument;
 	private description : Common`String := "";
 	private static artists : set of Artist := {};
 operations
-	public Artist : Common`String1 * Common`String1 * Common`String * Bands * Musics * Address * seq of Genre * seq of Instrument * Common`String ==> Artist
+	public Artist : Common`String1 * Common`String1 * Common`String * Bands * Musics * Common`Address * seq of Genre * seq of Instrument * Common`String ==> Artist
 	Artist(a,b,c,d,e,f,g,h,i) == (
 		--PublicUser();
 		firstName := a;

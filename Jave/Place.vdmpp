@@ -6,7 +6,7 @@ values
 instance variables
 	private name : Common`String1;
 	private description : Common`String;
-	private location : Address;
+	private location : Common`Address;
 	private votes : nat;
 operations
 -- TODO Define operations here

@@ -8,7 +8,7 @@ instance variables
 	private members : seq1 of Artist;
 	private musics : seq of Music;
 	private description : Common`String;
-	private location : Address;
+	private location : Common`Address;
 	private genres : seq of Genre;
 operations
 -- TODO Define operations here

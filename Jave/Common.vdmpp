@@ -2,6 +2,11 @@ class Common
 types
 	public static String = seq of char;
 	public static String1 = seq1 of char;
+	public static Address ::
+		street : Common`String
+		number : Common`String
+		city : Common`String1
+		zipcode : Common`String;
 values
 -- TODO Define values here
 instance variables
