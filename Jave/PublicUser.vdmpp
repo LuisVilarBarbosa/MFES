@@ -1,13 +1,13 @@
 class PublicUser is subclass of User
 types
 	public static Genre = Common`String1;
-	private static Genres = set of Genre;
+	public static Genres = set of Genre;
 	public static Instrument = Common`String1;
-	private static Instruments = set of Instrument;
+	public static Instruments = set of Instrument;
 	public static Music ::
 		name : Common`String1
 		link : Common`String1;
-	private static Musics = set of Music;
+	public static Musics = set of Music;
 values
 -- TODO Define values here
 instance variables
@@ -37,6 +37,13 @@ operations
 	--pre 
 	post stageName = n;
 
+	public GetStageName : () ==> Common`String1
+	GetStageName() == (
+		return stageName;
+	);
+	--pre
+	--post;
+
 	public AddMusic(m : Music) == (
 		musics := musics union {m};
 	)
@@ -48,12 +55,26 @@ operations
 	)
 	pre musics inter {m} = {m}
 	post musics inter {m} = {};
+
+	public GetMusics : () ==> Musics
+	GetMusics() == (
+		return musics;
+	);
+	--pre
+	--post;
 	
 	public SetLocation(l : Common`Address) == (
 		location := l;
 	)
 	--pre 
 	post location = l;
+
+	public GetLocation : () ==> Common`Address
+	GetLocation() == (
+		return location;
+	);
+	--pre
+	--post;
 
 	public AddGenre(g : Genre) == (
 		genres := genres union {g};
@@ -67,6 +88,13 @@ operations
 	pre genres inter {g} = {g}
 	post genres inter {g} = {};
 
+	public GetGenres : () ==> Genres
+	GetGenres() == (
+		return genres;
+	);
+	--pre
+	--post;
+
 	public AddInstrument(i : Instrument) == (
 		instruments := instruments union {i};
 	)
@@ -79,11 +107,25 @@ operations
 	pre instruments inter {i} = {i}
 	post instruments inter {i} = {};
 
+	public GetInstruments : () ==> Instruments
+	GetInstruments() == (
+		return instruments;
+	);
+	--pre
+	--post;
+
 	public SetDescription(d : Common`String) == (
 		description := d;
 	)
 	--pre 
 	post description = d;
+
+	public GetDescription : () ==> Common`String
+	GetDescription() == (
+		return description;
+	);
+	--pre
+	--post;
 functions
 -- TODO Define functiones here
 traces
