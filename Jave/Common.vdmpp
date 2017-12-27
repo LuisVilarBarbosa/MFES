@@ -3,10 +3,10 @@ types
 	public static String = seq of char;
 	public static String1 = seq1 of char;
 	public static Address ::
-		street : Common`String
-		number : Common`String
-		city : Common`String1
-		zipcode : Common`String;
+		street : String
+		number : String
+		city : String1
+		zipcode : String;
 	public static Date ::
 		year : nat1
 		month : nat1
@@ -32,6 +32,20 @@ operations
 	);
 	--pre
 	--post;
+
+	public static CreateAddress : String * String * String1 * String ==> Address
+	CreateAddress(stt,num,c,zip) == (
+		return mk_Address(stt,num,c,zip);
+	);
+	--pre
+	--pos
+
+	public static CreateDate : nat1 * nat1 * nat1 ==> Date
+	CreateDate(y,m,d) == (
+		return mk_Date(y,m,d);
+	);
+	--pre
+	--pos
 functions
 	public static DaysOfMonth : nat1 * nat1 +> nat1
 	DaysOfMonth(y,m) == (
