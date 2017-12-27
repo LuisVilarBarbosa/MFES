@@ -20,13 +20,13 @@ instance variables
 operations
 	public PublicUser : Common`String1 * Common`Address ==> PublicUser
 	PublicUser(stgName, loc) == (
-		--User();
 		stageName := stgName;
 		musics := {};
 		location := loc;
 		genres := {};
 		instruments := {};
 		description := "";
+		User();
 	);
 	--pre
 	--post

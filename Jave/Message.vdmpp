@@ -25,9 +25,31 @@ operations
 		text := t;
 		sender := s;
 		conversation := c;
+		conversation.AddMessage(self);
 	)
-	--pre
+	--pre c.GetMembers() inter {sender} = {sender}
 	post id = lastId and date = d and text = t and sender = s and conversation = c;
+
+	public GetDate : () ==> Date
+	GetDate() == (
+		return date;
+	);
+	--pre
+	--post;
+
+	public GetText : () ==> Common`String1
+	GetText() == (
+		return text;
+	);
+	--pre
+	--post;
+
+	public GetSender : () ==> User
+	GetSender() == (
+		return sender;
+	);
+	--pre
+	--post;
 functions
 	public static DaysOfMonth : nat1 * nat1 +> nat1
 	DaysOfMonth(y,m) == (

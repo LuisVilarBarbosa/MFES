@@ -1,12 +1,29 @@
 class User
 types
--- TODO Define types here
+	public static Conversations = set of Conversation;
 values
--- TODO Define values here
 instance variables
--- TODO Define instance variables here
+	private conversations : Conversations;
 operations
--- TODO Define operations here
+	public User : () ==> User
+	User() == (
+		conversations := {};
+	);
+	--pre
+	--post
+
+	public AddConversation(c : Conversation) == (
+		conversations := conversations union {c};
+	)
+	pre conversations inter {c} = {}
+	post conversations inter {c} = {c};
+
+	public GetConversations : () ==> Conversations
+	GetConversations() == (
+		return conversations;
+	);
+	--pre
+	--post;
 functions
 -- TODO Define functiones here
 traces

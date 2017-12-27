@@ -1,24 +1,66 @@
 class Conversation
 types
-	public static Users = set of User;
+	public static Users = set1 of User;
+	public static Messages = set of Message;
 values
 -- TODO Define values here
 instance variables
-	private members : Users := {};
+	private members : Users;
 	private topic : Common`String1;
+	private static messages : Messages := {};
 operations
 	public Conversation : Common`String1 * Users ==> Conversation
 	Conversation(t, users) == (
 		topic := t;
 		members := users;
-		return self;
+		for all user in set members do
+			user.AddConversation(self);
 	)
-	pre members = {} -- and topic = []
-	post members = users and topic = t;
+	pre card users > 1
+	post members = users and topic = t; -- and forall user in set members & user.GetConversations() inter {self} = {self};
+
+	public AddMember(u : User) == (
+		members := members union {u};
+	)
+	pre members inter {u} = {}
+	post members inter {u} = {u};
+	
+	public RemoveMember(u : Band) == (
+		members := members \ {u};
+	)
+	pre members inter {u} = {u}
+	post members inter {u} = {};
 	
 	public GetMembers : () ==> Users
 	GetMembers() == (
 		return members;
+	);
+	--pre
+	--post;
+
+	public SetTopic : Common`String1 ==> ()
+	SetTopic(t) == (
+		topic := t;
+	);
+	--pre
+	--post;
+
+	public GetTopic : () ==> Common`String1
+	GetTopic() == (
+		return topic;
+	);
+	--pre
+	--post;
+
+	public AddMessage(m : Message) == (
+		messages := messages union {m};
+	)
+	pre messages inter {m} = {}
+	post messages inter {m} = {m};
+
+	public GetMessages : () ==> Messages
+	GetMessages() == (
+		return messages;
 	);
 	--pre
 	--post;
