@@ -18,10 +18,10 @@ instance variables
 	private instruments : Instruments;
 	private description : Common`String;
 operations
-	public PublicUser : Common`String1 * Common`String1 * Common`Address ==> PublicUser
-	PublicUser(firstName,lastName, loc) == (
+	public PublicUser : Common`String1 * Common`Address ==> PublicUser
+	PublicUser(stgName, loc) == (
 		--User();
-		stageName := firstName ^ " " ^ lastName;
+		stageName := stgName;
 		musics := {};
 		location := loc;
 		genres := {};

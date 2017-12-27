@@ -8,11 +8,11 @@ instance variables
 	private memberOf : Bands;
 	private static artists : Artists := {};
 operations
-	public Artist : Common`String1 * Common`String1 * Common`Address ==> Artist
-	Artist(firstName,lastName,loc) == (
+	public Artist : Common`String1 * Common`Address ==> Artist
+	Artist(stgName,loc) == (
 		memberOf := {};
 		artists := artists union {self};
-		PublicUser(firstName,lastName,loc);
+		PublicUser(stgName,loc);
 	);
 	-- post
 	
@@ -36,10 +36,10 @@ operations
 	--post;
 
 	public GetBands : Common`String ==> Bands
-	GetBands(name) == (
+	GetBands(searchStr) == (
 		dcl results : Bands := {};
 		for all band in set memberOf do
-			if(ContainsStr2(band.GetStageName(),name)) then
+			if(Common`ContainsStr2(band.GetStageName(),searchStr)) then
 					results := results union {band};
 		return results;
 	);
@@ -54,28 +54,12 @@ operations
 	--post;
 
 	public GetArtists : Common`String ==> Artists
-	GetArtists(name) == (
+	GetArtists(searchStr) == (
 		dcl results : Artists := {};
 		for all artist in set artists do
-			if(ContainsStr2(artist.GetStageName(),name)) then
+			if(Common`ContainsStr2(artist.GetStageName(),searchStr)) then
 					results := results union {artist};
 		return results;
-	);
-	--pre
-	--post;
-
-	private static ContainsStr2 : Common`String1 * Common`String1 ==> bool
-	ContainsStr2(str1,str2) == (
-		for i = 0 to len str1 - len str2 do (
-			dcl res : bool := true;
-			for j = 0 to len str2 - 1 do (
-				if (str1(i+j) <> str2(j)) then
-					res := false;
-			);
-			if(res) then
-				return res;
-		);
-		return false;
 	);
 	--pre
 	--post;
