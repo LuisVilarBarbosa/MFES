@@ -1,14 +1,25 @@
 class Calendar
 types
--- TODO Define types here
-	private Shows = seq of Show --ordered by date
-		;--inv showsInv == forall i, j in set {0,showsInv.length-1} & i < j => showsInv(i) <= showsInv(j);
+	public static Performers = set of PublicUser
+		;-- no band and its artists (inv)?
+	public static Show ::
+		name : Common`String1
+		performers : Performers
+		startDate : Common`Date
+		endDate : Common`Date
+		place : Place
+		description : Common`String;
+	public static Shows = set of Show --ordered by date
+		;--inv s == forall i, j in set {0..s.length-1} & i < j => s(i) <= s(j);
 values
 -- TODO Define values here
 instance variables
-	private shows : Shows;
+	private static shows : Shows := {};
 operations
--- TODO Define operations here
+	public static GetShows : () ==> Shows
+	GetShows() == return shows;
+	--pre
+	--post
 functions
 -- TODO Define functiones here
 traces

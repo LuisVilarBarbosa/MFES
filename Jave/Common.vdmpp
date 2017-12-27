@@ -7,6 +7,11 @@ types
 		number : Common`String
 		city : Common`String1
 		zipcode : Common`String;
+	public static Date ::
+		year : nat1
+		month : nat1
+		day : nat1
+		inv d == d.month  <= 12 and d.day <= DaysOfMonth(d.year, d.month);
 values
 -- TODO Define values here
 instance variables
@@ -28,7 +33,17 @@ operations
 	--pre
 	--post;
 functions
--- TODO Define functiones here
+	public static DaysOfMonth : nat1 * nat1 +> nat1
+	DaysOfMonth(y,m) == (
+		if (m = 2) then (
+			if (y mod 400 = 0) or ((y mod 4 = 0) and (y mod 100 <> 0))
+				then 29
+			else 28
+		)
+		else 31 - (m - 1) mod 7 mod 2
+	)
+	pre m <= 12
+	post RESULT <= 31;
 traces
 -- TODO Define Combinatorial Test Traces here
 end Common
