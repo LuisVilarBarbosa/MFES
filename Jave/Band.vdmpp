@@ -1,15 +1,10 @@
 class Band is subclass of PublicUser
 types
--- TODO Define types here
+	private static Members = set1 of Artist;
 values
 -- TODO Define values here
 instance variables
-	private name : Common`String1;
-	private members : seq1 of Artist;
-	private musics : seq of Music;
-	private description : Common`String;
-	private location : Common`Address;
-	private genres : seq of Genre;
+	private members : Members;
 operations
 -- TODO Define operations here
 functions

@@ -1,12 +1,89 @@
 class PublicUser is subclass of User
 types
--- TODO Define types here
+	public static Genre = Common`String1;
+	private static Genres = set of Genre;
+	public static Instrument = Common`String1;
+	private static Instruments = set of Instrument;
+	public static Music ::
+		name : Common`String1
+		link : Common`String1;
+	private static Musics = set of Music;
 values
 -- TODO Define values here
 instance variables
--- TODO Define instance variables here
+	private stageName : Common`String1;
+	private musics : Musics;
+	private location : Common`Address;
+	private genres : Genres;
+	private instruments : Instruments;
+	private description : Common`String;
 operations
--- TODO Define operations here
+	public PublicUser : Common`String1 * Common`String1 * Common`Address ==> PublicUser
+	PublicUser(firstName,lastName, loc) == (
+		--User();
+		stageName := firstName ^ " " ^ lastName;
+		musics := {};
+		location := loc;
+		genres := {};
+		instruments := {};
+		description := "";
+	);
+	--pre
+	--post
+
+	public SetStageName(n : Common`String1) == (
+		stageName := n;
+	)
+	--pre 
+	post stageName = n;
+
+	public AddMusic(m : Music) == (
+		musics := musics union {m};
+	)
+	pre musics inter {m} = {}
+	post musics inter {m} = {m};
+	
+	public RemoveMusic(m : Music) == (
+		musics := musics \ {m};
+	)
+	pre musics inter {m} = {m}
+	post musics inter {m} = {};
+	
+	public SetLocation(l : Common`Address) == (
+		location := l;
+	)
+	--pre 
+	post location = l;
+
+	public AddGenre(g : Genre) == (
+		genres := genres union {g};
+	)
+	pre genres inter {g} = {}
+	post genres inter {g} = {g};
+	
+	public RemoveGenre(g : Genre) == (
+		genres := genres \ {g};
+	)
+	pre genres inter {g} = {g}
+	post genres inter {g} = {};
+
+	public AddInstrument(i : Instrument) == (
+		instruments := instruments union {i};
+	)
+	pre instruments inter {i} = {}
+	post instruments inter {i} = {i};
+	
+	public RemoveInstrument(i : Instrument) == (
+		instruments := instruments \ {i};
+	)
+	pre instruments inter {i} = {i}
+	post instruments inter {i} = {};
+
+	public SetDescription(d : Common`String) == (
+		description := d;
+	)
+	--pre 
+	post description = d;
 functions
 -- TODO Define functiones here
 traces
