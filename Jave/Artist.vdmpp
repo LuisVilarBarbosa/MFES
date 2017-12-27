@@ -16,13 +16,15 @@ operations
 	);
 	-- post
 	
-	public AddBand(b : Band) == (
+	public AddBand : Band ==> ()
+	AddBand(b) == (
 		memberOf := memberOf union {b};
 	)
 	pre memberOf inter {b} = {}
 	post memberOf inter {b} = {b};
 	
-	public RemoveBand(b : Band) == (
+	public RemoveBand : Band ==> ()
+	RemoveBand(b) == (
 		memberOf := memberOf \ {b};
 	)
 	pre memberOf inter {b} = {b}

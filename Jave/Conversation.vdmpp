@@ -19,13 +19,15 @@ operations
 	pre card users > 1
 	post members = users and topic = t; -- and forall user in set members & user.GetConversations() inter {self} = {self};
 
-	public AddMember(u : User) == (
+	public AddMember : User ==> ()
+	AddMember(u) == (
 		members := members union {u};
 	)
 	pre members inter {u} = {}
 	post members inter {u} = {u};
 	
-	public RemoveMember(u : Band) == (
+	public RemoveMember : User ==> ()
+	RemoveMember(u) == (
 		members := members \ {u};
 	)
 	pre members inter {u} = {u}
@@ -52,7 +54,8 @@ operations
 	--pre
 	--post;
 
-	public AddMessage(m : Message) == (
+	public AddMessage : Message ==> ()
+	AddMessage(m) == (
 		messages := messages union {m};
 	)
 	pre messages inter {m} = {}

@@ -12,7 +12,8 @@ operations
 	--pre
 	--post
 
-	public AddConversation(c : Conversation) == (
+	public AddConversation : Conversation ==> ()
+	AddConversation(c) == (
 		conversations := conversations union {c};
 	)
 	pre conversations inter {c} = {}
