@@ -1,14 +1,18 @@
 class Conversation
 types
 	public static Users = set1 of User;
-	public static Messages = set of Message;
+	public static Message ::
+		date : Common`Date
+		text : Common`String1
+		sender : User;
+	public static Messages = inmap nat1 to Message;
 values
 -- TODO Define values here
 instance variables
 	-- Variables declared public to facilitate queries
 	public members : Users;
 	public topic : Common`String1;
-	public static messages : Messages := {};
+	public messages : Messages := { |-> };
 operations
 	public Conversation : Common`String1 * Users ==> Conversation
 	Conversation(t, users) == (
@@ -41,12 +45,14 @@ operations
 	--pre
 	--post;
 
-	public AddMessage : Message ==> ()
-	AddMessage(m) == (
-		messages := messages union {m};
-	)
-	pre messages inter {m} = {}
-	post messages inter {m} = {m};
+	public AddMessage : Common`Date * Common`String1 * User ==> ()
+	AddMessage(d,t,s) == (
+		dcl msg : Message := mk_Message(d,t,s);
+		dcl myMap : Messages := { card dom messages |-> msg };
+		messages := messages munion myMap;
+	);
+	--pre
+	--post
 functions
 -- TODO Define functiones here
 traces
