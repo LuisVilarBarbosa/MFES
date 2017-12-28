@@ -4,12 +4,13 @@ types
 values
 -- TODO Define values here
 instance variables
-	private name : Common`String1;
-	private description : Common`String;
-	private location : Common`Address;
-	private positive_votes : nat;
-	private negative_votes : nat;
-	private static places : Places := {};
+	-- Variables declared public to facilitate queries
+	public name : Common`String1;
+	public description : Common`String;
+	public location : Common`Address;
+	public positive_votes : nat;
+	public negative_votes : nat;
+	public static places : Places := {};
 operations
 	public Place : Common`String1 * Common`String * Common`Address ==> Place
 	Place(n,d,l) == (
@@ -21,36 +22,6 @@ operations
 		places := places union {self};
 	);
 	-- post
-
-	public GetName : () ==> Common`String1
-	GetName() == return name;
-	--pre
-	--post
-
-	public GetDescription : () ==> Common`String
-	GetDescription() == return description;
-	--pre
-	--post
-
-	public GetLocation : () ==> Common`Address
-	GetLocation() == return location;
-	--pre
-	--post
-
-	public GetPositiveVotes : () ==> nat
-	GetPositiveVotes() == return positive_votes;
-	--pre
-	--post
-
-	public GetNegativeVotes : () ==> nat
-	GetNegativeVotes() == return negative_votes;
-	--pre
-	--post
-
-	public static GetPlaces : () ==> Places
-	GetPlaces() == return places;
-	--pre
-	--post
 functions
 -- TODO Define functiones here
 traces

@@ -3,7 +3,8 @@ types
 	public static Conversations = set of Conversation;
 values
 instance variables
-	private conversations : Conversations;
+	-- Variables declared public to facilitate queries
+	public conversations : Conversations;
 operations
 	public User : () ==> User
 	User() == (
@@ -18,13 +19,6 @@ operations
 	)
 	pre conversations inter {c} = {}
 	post conversations inter {c} = {c};
-
-	public GetConversations : () ==> Conversations
-	GetConversations() == (
-		return conversations;
-	);
-	--pre
-	--post;
 functions
 -- TODO Define functiones here
 traces

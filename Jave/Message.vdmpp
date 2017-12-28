@@ -5,11 +5,12 @@ values
 -- TODO Define values here
 instance variables
 	private static lastId : nat := 0;
-	private id : nat1;
-	private date : Common`Date;
-	private text : Common`String1;
-	private sender : User;
-	private conversation : Conversation;
+	-- Variables declared public to facilitate queries
+	public id : nat1;
+	public date : Common`Date;
+	public text : Common`String1;
+	public sender : User;
+	public conversation : Conversation;
 operations
 	public Message : Common`Date * Common`String1 * User * Conversation ==> Message
 	Message(d,t,s,c) == (
@@ -25,27 +26,6 @@ operations
 	)
 	--pre c.GetMembers() inter {sender} = {sender}
 	post id = lastId and date = d and text = t and sender = s and conversation = c;
-
-	public GetDate : () ==> Common`Date
-	GetDate() == (
-		return date;
-	);
-	--pre
-	--post;
-
-	public GetText : () ==> Common`String1
-	GetText() == (
-		return text;
-	);
-	--pre
-	--post;
-
-	public GetSender : () ==> User
-	GetSender() == (
-		return sender;
-	);
-	--pre
-	--post;
 functions
 -- TODO Define functiones here
 traces

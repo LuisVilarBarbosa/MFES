@@ -5,9 +5,10 @@ types
 values
 -- TODO Define values here
 instance variables
-	private members : Users;
-	private topic : Common`String1;
-	private static messages : Messages := {};
+	-- Variables declared public to facilitate queries
+	public members : Users;
+	public topic : Common`String1;
+	public static messages : Messages := {};
 operations
 	public Conversation : Common`String1 * Users ==> Conversation
 	Conversation(t, users) == (
@@ -32,24 +33,10 @@ operations
 	)
 	pre members inter {u} = {u}
 	post members inter {u} = {};
-	
-	public GetMembers : () ==> Users
-	GetMembers() == (
-		return members;
-	);
-	--pre
-	--post;
 
 	public SetTopic : Common`String1 ==> ()
 	SetTopic(t) == (
 		topic := t;
-	);
-	--pre
-	--post;
-
-	public GetTopic : () ==> Common`String1
-	GetTopic() == (
-		return topic;
 	);
 	--pre
 	--post;
@@ -60,13 +47,6 @@ operations
 	)
 	pre messages inter {m} = {}
 	post messages inter {m} = {m};
-
-	public GetMessages : () ==> Messages
-	GetMessages() == (
-		return messages;
-	);
-	--pre
-	--post;
 functions
 -- TODO Define functiones here
 traces

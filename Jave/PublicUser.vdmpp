@@ -11,12 +11,13 @@ types
 values
 -- TODO Define values here
 instance variables
-	private stageName : Common`String1;
-	private musics : Musics;
-	private location : Common`Address;
-	private genres : Genres;
-	private instruments : Instruments;
-	private description : Common`String;
+	-- Variables declared public to facilitate queries
+	public stageName : Common`String1;
+	public musics : Musics;
+	public location : Common`Address;
+	public genres : Genres;
+	public instruments : Instruments;
+	public description : Common`String;
 operations
 	public PublicUser : Common`String1 * Common`Address ==> PublicUser
 	PublicUser(stgName, loc) == (
@@ -38,13 +39,6 @@ operations
 	--pre 
 	post stageName = n;
 
-	public GetStageName : () ==> Common`String1
-	GetStageName() == (
-		return stageName;
-	);
-	--pre
-	--post;
-
 	public AddMusic : Music ==> ()
 	AddMusic(m) == (
 		musics := musics union {m};
@@ -58,13 +52,6 @@ operations
 	)
 	pre musics inter {m} = {m}
 	post musics inter {m} = {};
-
-	public GetMusics : () ==> Musics
-	GetMusics() == (
-		return musics;
-	);
-	--pre
-	--post;
 	
 	public SetLocation : Common`Address ==> ()
 	SetLocation(l) == (
@@ -72,13 +59,6 @@ operations
 	)
 	--pre 
 	post location = l;
-
-	public GetLocation : () ==> Common`Address
-	GetLocation() == (
-		return location;
-	);
-	--pre
-	--post;
 
 	public AddGenre : Genre ==> ()
 	AddGenre(g) == (
@@ -94,13 +74,6 @@ operations
 	pre genres inter {g} = {g}
 	post genres inter {g} = {};
 
-	public GetGenres : () ==> Genres
-	GetGenres() == (
-		return genres;
-	);
-	--pre
-	--post;
-
 	public AddInstrument : Instrument ==> ()
 	AddInstrument(i) == (
 		instruments := instruments union {i};
@@ -115,26 +88,12 @@ operations
 	pre instruments inter {i} = {i}
 	post instruments inter {i} = {};
 
-	public GetInstruments : () ==> Instruments
-	GetInstruments() == (
-		return instruments;
-	);
-	--pre
-	--post;
-
 	public SetDescription : Common`String ==> ()
 	SetDescription(d) == (
 		description := d;
 	)
 	--pre 
 	post description = d;
-
-	public GetDescription : () ==> Common`String
-	GetDescription() == (
-		return description;
-	);
-	--pre
-	--post;
 functions
 -- TODO Define functiones here
 traces

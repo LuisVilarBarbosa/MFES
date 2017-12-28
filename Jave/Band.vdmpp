@@ -4,7 +4,8 @@ types
 values
 -- TODO Define values here
 instance variables
-	private members : Members;
+	-- Variables declared public to facilitate queries
+	public members : Members;
 operations
 	public Band : Common`String1 * Common`Address * Members ==> Band
 	Band(stgName,loc,m) == (
@@ -16,18 +17,11 @@ operations
 	--pre
 	--post;
 
-	public GetMembers : () ==> Members
-	GetMembers() == (
-		return members;
-	);
-	--pre
-	--post;
-
 	public GetMembers : Common`String ==> Artist`Artists
 	GetMembers(searchStr) == (
 		dcl results : Artist`Artists := {};
 		for all artist in set members do
-			if(Common`ContainsStr2(artist.GetStageName(),searchStr)) then
+			if(Common`ContainsStr2(artist.stageName,searchStr)) then
 					results := results union {artist};
 		return results;
 	);

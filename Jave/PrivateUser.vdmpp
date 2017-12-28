@@ -4,10 +4,11 @@ types
 values
 -- TODO Define values here
 instance variables
-	private firstName : Common`String1;
-	private lastName : Common`String1;
-	private favoriteUsers : set of PublicUser;
-	private myPublicUsers : set of PublicUser;
+	-- Variables declared public to facilitate queries
+	public firstName : Common`String1;
+	public lastName : Common`String1;
+	public favoriteUsers : set of PublicUser;
+	public myPublicUsers : set of PublicUser;
 operations
 	public PrivateUser : Common`String1 * Common`String1 ==> PrivateUser
 	PrivateUser(fn,ln) == (

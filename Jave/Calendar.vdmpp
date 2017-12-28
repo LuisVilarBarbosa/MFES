@@ -14,13 +14,9 @@ types
 values
 -- TODO Define values here
 instance variables
-	private static shows : Shows := {};
+	-- Variables declared public to facilitate queries
+	public static shows : Shows := {};
 operations
-	public static GetShows : () ==> Shows
-	GetShows() == return shows;
-	--pre
-	--post
-
 	public static CreateShow : Common`String1 * Performers * Common`Date * Common`Date * Place * Common`String ==> Show
 	CreateShow(n,ps,sd,ed,pl,desc) == (
 		return mk_Show(n,ps,sd,ed,pl,desc);

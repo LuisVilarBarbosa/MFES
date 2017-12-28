@@ -5,8 +5,9 @@ types
 values
 -- TODO Define values here
 instance variables
-	private memberOf : Bands;
-	private static artists : Artists := {};
+	-- Variables declared public to facilitate queries
+	public memberOf : Bands;
+	public static artists : Artists := {};
 operations
 	public Artist : Common`String1 * Common`Address ==> Artist
 	Artist(stgName,loc) == (
@@ -29,28 +30,14 @@ operations
 	)
 	pre memberOf inter {b} = {b}
 	post memberOf inter {b} = {};
-	
-	public GetBands : () ==> Bands
-	GetBands() == (
-		return memberOf;
-	);
-	--pre
-	--post;
 
 	public GetBands : Common`String ==> Bands
 	GetBands(searchStr) == (
 		dcl results : Bands := {};
 		for all band in set memberOf do
-			if(Common`ContainsStr2(band.GetStageName(),searchStr)) then
+			if(Common`ContainsStr2(band.stageName,searchStr)) then
 					results := results union {band};
 		return results;
-	);
-	--pre
-	--post;
-
-	public GetArtists : () ==> Artists
-	GetArtists() == (
-		return artists;
 	);
 	--pre
 	--post;
@@ -59,7 +46,7 @@ operations
 	GetArtists(searchStr) == (
 		dcl results : Artists := {};
 		for all artist in set artists do
-			if(Common`ContainsStr2(artist.GetStageName(),searchStr)) then
+			if(Common`ContainsStr2(artist.stageName,searchStr)) then
 					results := results union {artist};
 		return results;
 	);
