@@ -9,7 +9,15 @@ instance variables
 	private favoriteUsers : set of PublicUser;
 	private myPublicUsers : set of PublicUser;
 operations
--- TODO Define operations here
+	public PrivateUser : Common`String1 * Common`String1 ==> PrivateUser
+	PrivateUser(fn,ln) == (
+		firstName := fn;
+		lastName := ln;
+		favoriteUsers := {};
+		myPublicUsers := {};
+	);
+	-- post
+
 functions
 -- TODO Define functiones here
 traces
