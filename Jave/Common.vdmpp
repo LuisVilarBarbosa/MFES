@@ -34,16 +34,12 @@ operations
 	--post;
 
 	public static CreateAddress : String * String * String1 * String ==> Address
-	CreateAddress(stt,num,c,zip) == (
-		return mk_Address(stt,num,c,zip);
-	);
+	CreateAddress(stt,num,c,zip) == return mk_Address(stt,num,c,zip);
 	--pre
 	--pos
 
 	public static CreateDate : nat1 * nat1 * nat1 ==> Date
-	CreateDate(y,m,d) == (
-		return mk_Date(y,m,d);
-	);
+	CreateDate(y,m,d) == return mk_Date(y,m,d);
 	--pre
 	--pos
 functions

@@ -25,23 +25,17 @@ operations
 	post members = users and topic = t; -- and forall user in set members & user.GetConversations() inter {self} = {self};
 
 	public AddMember : User ==> ()
-	AddMember(u) == (
-		members := members union {u};
-	)
+	AddMember(u) == members := members union {u}
 	pre members inter {u} = {}
 	post members inter {u} = {u};
 	
 	public RemoveMember : User ==> ()
-	RemoveMember(u) == (
-		members := members \ {u};
-	)
+	RemoveMember(u) == members := members \ {u}
 	pre members inter {u} = {u}
 	post members inter {u} = {};
 
 	public SetTopic : Common`String1 ==> ()
-	SetTopic(t) == (
-		topic := t;
-	);
+	SetTopic(t) == topic := t;
 	--pre
 	--post;
 

@@ -33,65 +33,47 @@ operations
 	--post
 
 	public SetStageName : Common`String1 ==> ()
-	SetStageName(n) == (
-		stageName := n;
-	)
+	SetStageName(n) == stageName := n
 	--pre 
 	post stageName = n;
 
 	public AddMusic : Music ==> ()
-	AddMusic(m) == (
-		musics := musics union {m};
-	)
+	AddMusic(m) == musics := musics union {m}
 	pre musics inter {m} = {}
 	post musics inter {m} = {m};
 	
 	public RemoveMusic : Music ==> ()
-	RemoveMusic(m) == (
-		musics := musics \ {m};
-	)
+	RemoveMusic(m) == musics := musics \ {m}
 	pre musics inter {m} = {m}
 	post musics inter {m} = {};
 	
 	public SetLocation : Common`Address ==> ()
-	SetLocation(l) == (
-		location := l;
-	)
+	SetLocation(l) == location := l
 	--pre 
 	post location = l;
 
 	public AddGenre : Genre ==> ()
-	AddGenre(g) == (
-		genres := genres union {g};
-	)
+	AddGenre(g) == genres := genres union {g}
 	pre genres inter {g} = {}
 	post genres inter {g} = {g};
 	
 	public RemoveGenre : Genre ==> ()
-	RemoveGenre(g) == (
-		genres := genres \ {g};
-	)
+	RemoveGenre(g) == genres := genres \ {g}
 	pre genres inter {g} = {g}
 	post genres inter {g} = {};
 
 	public AddInstrument : Instrument ==> ()
-	AddInstrument(i) == (
-		instruments := instruments union {i};
-	)
+	AddInstrument(i) == instruments := instruments union {i}
 	pre instruments inter {i} = {}
 	post instruments inter {i} = {i};
 	
 	public RemoveInstrument : Instrument ==> ()
-	RemoveInstrument(i) == (
-		instruments := instruments \ {i};
-	)
+	RemoveInstrument(i) == instruments := instruments \ {i}
 	pre instruments inter {i} = {i}
 	post instruments inter {i} = {};
 
 	public SetDescription : Common`String ==> ()
-	SetDescription(d) == (
-		description := d;
-	)
+	SetDescription(d) == description := d
 	--pre 
 	post description = d;
 functions

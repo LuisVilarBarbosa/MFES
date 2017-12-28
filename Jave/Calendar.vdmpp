@@ -18,23 +18,17 @@ instance variables
 	public static shows : Shows := {};
 operations
 	public static CreateShow : Common`String1 * Performers * Common`Date * Common`Date * Place * Common`String ==> Show
-	CreateShow(n,ps,sd,ed,pl,desc) == (
-		return mk_Show(n,ps,sd,ed,pl,desc);
-	);
+	CreateShow(n,ps,sd,ed,pl,desc) == return mk_Show(n,ps,sd,ed,pl,desc);
 	--pre
 	--post
 
 	public static AddShow : Show ==> ()
-	AddShow(s) == (
-		shows := shows union {s};
-	)
+	AddShow(s) == shows := shows union {s}
 	pre shows inter {s} = {}
 	post shows inter {s} = {s};
 
 	public static RemoveShow : Show ==> ()
-	RemoveShow(s) == (
-		shows := shows \ {s};
-	)
+	RemoveShow(s) == shows := shows \ {s}
 	pre shows inter {s} = {s}
 	post shows inter {s} = {};
 functions

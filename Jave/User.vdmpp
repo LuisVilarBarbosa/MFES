@@ -7,16 +7,12 @@ instance variables
 	public conversations : Conversations;
 operations
 	public User : () ==> User
-	User() == (
-		conversations := {};
-	);
+	User() == conversations := {};
 	--pre
 	--post
 
 	public AddConversation : Conversation ==> ()
-	AddConversation(c) == (
-		conversations := conversations union {c};
-	)
+	AddConversation(c) == conversations := conversations union {c}
 	pre conversations inter {c} = {}
 	post conversations inter {c} = {c};
 functions
