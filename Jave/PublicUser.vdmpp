@@ -18,10 +18,10 @@ instance variables
 	public genres : Genres;
 	public instruments : Instruments;
 	public description : Common`String;
+	private static allMusics : Musics := {};
 operations
-	public PublicUser : PrivateUser * Common`String1 * Common`Address ==> PublicUser
-	PublicUser(privateUser,stgName, loc) == (
-		privateUser.AddPublicUser(self);
+	public PublicUser : Common`String1 * Common`Address ==> PublicUser
+	PublicUser(stgName, loc) == (
 		musics := {};
 		location := loc;
 		genres := {};
@@ -32,10 +32,13 @@ operations
 	--pre
 	--post
 
-	public AddMusic : Music ==> ()
-	AddMusic(m) == musics := musics union {m}
-	pre musics inter {m} = {}
-	post musics inter {m} = {m};
+	public AddMusic : Common`String1 * Common`String1 ==> ()
+	AddMusic(n,l) == (
+		dcl m : Music := mk_Music(n,l);
+		musics := musics union {m};
+		allMusics := allMusics union {m};
+	)
+	pre forall music in set allMusics & music.link <> l;
 	
 	public RemoveMusic : Music ==> ()
 	RemoveMusic(m) == musics := musics \ {m}

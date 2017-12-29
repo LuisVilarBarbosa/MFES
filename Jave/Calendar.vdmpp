@@ -17,11 +17,6 @@ instance variables
 	-- Variables declared public to facilitate queries
 	public static shows : Shows := {};
 operations
-	public static CreateShow : Common`String1 * Performers * Common`Date * Common`Date * Place * Common`String ==> Show
-	CreateShow(n,ps,sd,ed,pl,desc) == return mk_Show(n,ps,sd,ed,pl,desc);
-	--pre
-	--post
-
 	public static AddShow : Show ==> ()
 	AddShow(s) == shows := shows union {s}
 	pre shows inter {s} = {}
@@ -32,7 +27,10 @@ operations
 	pre shows inter {s} = {s}
 	post shows inter {s} = {};
 functions
--- TODO Define functiones here
+	public static CreateShow : Common`String1 * Performers * Common`Date * Common`Date * Place * Common`String +> Show
+	CreateShow(n,ps,sd,ed,pl,desc) == mk_Show(n,ps,sd,ed,pl,desc);
+	--pre
+	--post
 traces
 -- TODO Define Combinatorial Test Traces here
 end Calendar

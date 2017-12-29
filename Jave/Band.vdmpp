@@ -9,13 +9,13 @@ instance variables
 	public members : Members;
 	public static bands : Bands := {};
 operations
-	public Band : PrivateUser * Common`String1 * Common`Address * Members ==> Band
-	Band(privateUser,stgName,loc,m) == (
+	public Band : Common`String1 * Common`Address * Members ==> Band
+	Band(stgName,loc,m) == (
 		members := m;
 		for all member in set members do
 			member.AddBand(self);
 		bands := bands union {self};
-		PublicUser(privateUser,stgName,loc);
+		PublicUser(stgName,loc);
 	)
 	--pre
 	post bands inter {self} = {self};

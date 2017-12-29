@@ -32,6 +32,11 @@ operations
 	SetDescription(d) == description := d
 	--pre
 	post description = d;
+
+	public static RemovePlace : Place ==> ()
+	RemovePlace(p) == places := places \ {p}
+	pre places inter {p} = {p}
+	post places inter {p} = {};
 functions
 -- TODO Define functiones here
 traces

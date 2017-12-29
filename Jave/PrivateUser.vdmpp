@@ -4,20 +4,28 @@ types
 		;--inv e == isEmail(e);
 	public static Password = Common`String1
 		inv p == len p >= minLength;
+	public static PublicUsers = set of PublicUser;
+	public static Places = set of Place;
+	public static Shows = set of Calendar`Show;
+	private static PrivateUsers = set of PrivateUser;
 values
 	private minLength = 8;
 instance variables
 	-- Variables declared public to facilitate queries
 	public email : Email;
 	public password : Password;
-	public myPublicUsers : set of PublicUser;
-	private static privateUsers : set of PrivateUser := {};
+	public myPublicUsers : PublicUsers;
+	public myPlaces : Places;
+	public myShows : Shows;
+	private static privateUsers : PrivateUsers := {};
 operations
 	public PrivateUser : Common`String1 * Email * Password ==> PrivateUser
 	PrivateUser(n,e,pass) == (
 		email := e;
 		password := pass;
 		myPublicUsers := {};
+		myPlaces := {};
+		myShows := {};
 		privateUsers := privateUsers union {self};
 		User(n);
 	)
@@ -29,10 +37,34 @@ operations
 	--pre
 	post password = p;
 
-	public AddPublicUser : PublicUser ==> ()
-	AddPublicUser(publicUser) == myPublicUsers := myPublicUsers union {publicUser}
-	pre myPublicUsers inter {publicUser} = {}
-	post myPublicUsers inter {publicUser} = {publicUser};
+	public CreatePublicUser : Common`String1 * Common`Address ==> ()
+	CreatePublicUser(n,addr) == myPublicUsers := myPublicUsers union {new PublicUser(n,addr)}
+	;--pre myPublicUsers inter {publicUser} = {};
+
+	public CreatePlace : Common`String1 * Common`String * Common`Address ==> ()
+	CreatePlace(n,d,l) == myPlaces := myPlaces union {new Place(n,d,l)}
+	;--pre myPlaces inter {p} = {}
+
+	public RemovePlace : Place ==> ()
+	RemovePlace(p) == (
+		myPlaces := myPlaces \ {p};
+		Place`RemovePlace(p);
+	)
+	pre myPlaces inter {p} = {}
+	post myPlaces inter {p} = {p};
+
+	public AddShow : Calendar`Show ==> ()
+	AddShow(s) == myShows := myShows union {s}
+	pre myShows inter {s} = {}
+	post myShows inter {s} = {s};
+
+	public RemoveShow : Calendar`Show ==> ()
+	RemoveShow(s) == (
+		myShows := myShows \ {s};
+		Calendar`RemoveShow(s);
+	)
+	pre myShows inter {s} = {}
+	post myShows inter {s} = {s};
 functions
 -- TODO Define functiones here
 traces
