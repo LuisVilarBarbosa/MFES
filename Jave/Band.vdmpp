@@ -26,17 +26,6 @@ operations
 	RemoveMember(a) == members := members \ {a}
 	pre members inter {a} = {a}
 	post members inter {a} = {};
-
-	public GetMembers : Common`String ==> Artist`Artists
-	GetMembers(searchStr) == (
-		dcl results : Artist`Artists := {};
-		for all artist in set members do
-			if(Common`ContainsStr2(artist.name,searchStr)) then
-					results := results union {artist};
-		return results;
-	);
-	--pre
-	--post;
 functions
 -- TODO Define functiones here
 traces

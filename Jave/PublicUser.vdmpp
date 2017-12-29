@@ -8,6 +8,7 @@ types
 		name : Common`String1
 		link : Common`String1;
 	public static Musics = set of Music;
+	public static PublicUsers = set of PublicUser;
 values
 -- TODO Define values here
 instance variables
@@ -69,6 +70,17 @@ operations
 	SetDescription(d) == description := d
 	--pre 
 	post description = d;
+
+	public GetPublicUsers : Common`String * PublicUsers ==> PublicUsers
+	GetPublicUsers(searchStr,array) == (
+		dcl results : PublicUsers := {};
+		for all u in set array do
+			if(Common`ContainsStr2(u.name,searchStr)) then
+					results := results union {u};
+		return results;
+	);
+	--pre
+	--post;
 functions
 -- TODO Define functiones here
 traces

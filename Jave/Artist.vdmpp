@@ -26,28 +26,6 @@ operations
 	RemoveBand(b) == memberOf := memberOf \ {b}
 	pre memberOf inter {b} = {b}
 	post memberOf inter {b} = {};
-
-	public GetBands : Common`String ==> Bands
-	GetBands(searchStr) == (
-		dcl results : Bands := {};
-		for all band in set memberOf do
-			if(Common`ContainsStr2(band.name,searchStr)) then
-					results := results union {band};
-		return results;
-	);
-	--pre
-	--post;
-
-	public GetArtists : Common`String ==> Artists
-	GetArtists(searchStr) == (
-		dcl results : Artists := {};
-		for all artist in set artists do
-			if(Common`ContainsStr2(artist.name,searchStr)) then
-					results := results union {artist};
-		return results;
-	);
-	--pre
-	--post;
 functions
 -- TODO Define functiones here
 traces
