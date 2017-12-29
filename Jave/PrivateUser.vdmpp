@@ -12,6 +12,7 @@ instance variables
 	public password : Password;
 	public favoriteUsers : set of PublicUser;
 	public myPublicUsers : set of PublicUser;
+	private static privateUsers : set of PrivateUser := {};
 operations
 	public PrivateUser : Common`String1 * Email * Password ==> PrivateUser
 	PrivateUser(n,e,pass) == (
@@ -19,9 +20,11 @@ operations
 		password := pass;
 		favoriteUsers := {};
 		myPublicUsers := {};
+		privateUsers := privateUsers union {self};
 		User(n);
-	);
-	-- post
+	)
+	pre forall u in set privateUsers & u.email <> e
+	post privateUsers inter {self} = {self};
 functions
 -- TODO Define functiones here
 traces
