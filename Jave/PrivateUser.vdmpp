@@ -53,10 +53,14 @@ operations
 	pre myPlaces inter {p} = {}
 	post myPlaces inter {p} = {p};
 
-	public AddShow : Calendar`Show ==> ()
-	AddShow(s) == myShows := myShows union {s}
-	pre myShows inter {s} = {}
-	post myShows inter {s} = {s};
+	public CreateShow : Common`String1 * Calendar`Performers * Common`Date * Common`Date * Place * Common`String ==> ()
+	CreateShow(n,ps,sd,ed,pl,desc) == (
+		dcl s : Calendar`Show := Calendar`CreateShow(n,ps,sd,ed,pl,desc);
+		myShows := myShows union {s};
+		Calendar`AddShow(s);
+	)
+	;--pre myShows inter {s} = {}
+	--post myShows inter {s} = {s};
 
 	public RemoveShow : Calendar`Show ==> ()
 	RemoveShow(s) == (
