@@ -25,14 +25,24 @@ operations
 	post members = users and topic = t and forall user in set members & user.conversations inter {self} = {self};
 
 	public AddMember : User ==> ()
-	AddMember(u) == members := members union {u}
-	pre members inter {u} = {}
+	AddMember(u) == (
+		if (members inter {u} = {}) then (
+			members := members union {u};
+			u.AddConversation(self);
+		);
+	)
+	--pre members inter {u} = {}
 	post members inter {u} = {u};
 	
 	public RemoveMember : User ==> ()
-	RemoveMember(u) == members := members \ {u}
-	pre members inter {u} = {u} and card members > minMembers
-	post members inter {u} = {} and card members >= minMembers;
+	RemoveMember(u) == (
+		if (members inter {u} = {u} and card members > minMembers) then (
+			members := members \ {u};
+			u.RemoveConversation(self);
+		);
+	)
+	pre card members >= minMembers
+	post members inter {u} = {} and card members >= minMembers and u.conversations inter {self} = {};
 
 	public SetTopic : Common`String1 ==> ()
 	SetTopic(t) == topic := t
@@ -44,8 +54,8 @@ operations
 		dcl msg : Message := mk_Message(d,t,s);
 		dcl myMap : Messages := { card dom messages + 1 |-> msg };
 		messages := messages munion myMap;
-	);
-	--pre
+	)
+	pre s in set members
 	--post
 functions
 -- TODO Define functiones here

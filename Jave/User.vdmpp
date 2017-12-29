@@ -21,9 +21,24 @@ operations
 	post name = n;
 
 	public AddConversation : Conversation ==> ()
-	AddConversation(c) == conversations := conversations union {c}
-	pre conversations inter {c} = {}
+	AddConversation(c) == (
+		if (conversations inter {c} = {}) then (
+			conversations := conversations union {c};
+			c.AddMember(self);
+		);
+	)
+	--pre conversations inter {c} = {}
 	post conversations inter {c} = {c};
+
+	public RemoveConversation : Conversation ==> ()
+	RemoveConversation(c) == (
+		if (conversations inter {c} = {c}) then (
+			conversations := conversations \ {c};
+			c.RemoveMember(self);
+		);
+	)
+	--pre conversations inter {c} = {c} and c.members inter {self} = {self}
+	post conversations inter {c} = {} and c.members inter {self} = {};
 functions
 -- TODO Define functiones here
 traces
