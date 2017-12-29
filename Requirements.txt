@@ -14,8 +14,7 @@ R013 - As an user, I want to know the date of a message.
 R014 - As a user, I want to be able to get a link to a music. 
 R015 - As a user, I want to be able to find places where I can listen to music. 
 R016 - As a user, I want to be able to see information related to a place and its rating. 
-R017 - As a user, I want to easily go to my favorite users. 
-R018 - As a private user, I want to easily go to my public users. 
-R019 - As a user, I want to be able to find shows and know some information about it as the performers, date, description and location. 
-R020 - As a user, I want to define the profile of my bands. 
+R017 - As a private user, I want to easily go to my public users. 
+R018 - As a user, I want to be able to find shows and know some information about it as the performers, date, description and location. 
+R019 - As a user, I want to define the profile of my bands. 
 
