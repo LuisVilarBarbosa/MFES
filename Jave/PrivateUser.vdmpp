@@ -24,6 +24,11 @@ operations
 	pre forall u in set privateUsers & u.email <> e
 	post privateUsers inter {self} = {self};
 
+	public SetPassword : Password ==> ()
+	SetPassword(p) == password := p
+	--pre
+	post password = p;
+
 	public AddPublicUser : PublicUser ==> ()
 	AddPublicUser(publicUser) == myPublicUsers := myPublicUsers union {publicUser}
 	pre myPublicUsers inter {publicUser} = {}
