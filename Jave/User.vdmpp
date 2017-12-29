@@ -4,12 +4,21 @@ types
 values
 instance variables
 	-- Variables declared public to facilitate queries
+	public name : Common`String1;
 	public conversations : Conversations;
 operations
-	public User : () ==> User
-	User() == conversations := {};
+	public User : Common`String1 ==> User
+	User(n) == (
+		name := n;
+		conversations := {};
+	)
 	--pre
-	--post
+	post name = n and conversations = {};
+
+	public SetName : Common`String1 ==> ()
+	SetName(n) == name := n
+	--pre 
+	post name = n;
 
 	public AddConversation : Conversation ==> ()
 	AddConversation(c) == conversations := conversations union {c}

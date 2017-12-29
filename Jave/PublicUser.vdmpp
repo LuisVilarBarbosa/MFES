@@ -12,7 +12,6 @@ values
 -- TODO Define values here
 instance variables
 	-- Variables declared public to facilitate queries
-	public stageName : Common`String1;
 	public musics : Musics;
 	public location : Common`Address;
 	public genres : Genres;
@@ -21,21 +20,15 @@ instance variables
 operations
 	public PublicUser : Common`String1 * Common`Address ==> PublicUser
 	PublicUser(stgName, loc) == (
-		stageName := stgName;
 		musics := {};
 		location := loc;
 		genres := {};
 		instruments := {};
 		description := "";
-		User();
+		User(stgName);
 	);
 	--pre
 	--post
-
-	public SetStageName : Common`String1 ==> ()
-	SetStageName(n) == stageName := n
-	--pre 
-	post stageName = n;
 
 	public AddMusic : Music ==> ()
 	AddMusic(m) == musics := musics union {m}

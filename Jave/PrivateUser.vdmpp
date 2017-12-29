@@ -1,24 +1,27 @@
 class PrivateUser is subclass of User
 types
--- TODO Define types here
+	public static Email = Common`String1
+		;--inv e == isEmail(e);
+	public static Password = Common`String1
+		inv p == len p >= minLength;
 values
--- TODO Define values here
+	private minLength = 8;
 instance variables
 	-- Variables declared public to facilitate queries
-	public firstName : Common`String1;
-	public lastName : Common`String1;
+	public email : Email;
+	public password : Password;
 	public favoriteUsers : set of PublicUser;
 	public myPublicUsers : set of PublicUser;
 operations
-	public PrivateUser : Common`String1 * Common`String1 ==> PrivateUser
-	PrivateUser(fn,ln) == (
-		firstName := fn;
-		lastName := ln;
+	public PrivateUser : Common`String1 * Email * Password ==> PrivateUser
+	PrivateUser(n,e,pass) == (
+		email := e;
+		password := pass;
 		favoriteUsers := {};
 		myPublicUsers := {};
+		User(n);
 	);
 	-- post
-
 functions
 -- TODO Define functiones here
 traces

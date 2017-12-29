@@ -22,6 +22,16 @@ operations
 		places := places union {self};
 	);
 	-- post
+
+	public SetName : Common`String1 ==> ()
+	SetName(n) == name := n
+	--pre
+	post name = n;
+
+	public SetDescription : Common`String ==> ()
+	SetDescription(d) == description := d
+	--pre
+	post description = d;
 functions
 -- TODO Define functiones here
 traces

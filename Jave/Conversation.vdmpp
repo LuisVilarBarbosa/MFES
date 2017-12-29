@@ -7,7 +7,7 @@ types
 		sender : User;
 	public static Messages = inmap nat1 to Message;
 values
--- TODO Define values here
+	private static minMembers = 2;
 instance variables
 	-- Variables declared public to facilitate queries
 	public members : Users;
@@ -21,8 +21,8 @@ operations
 		for all user in set members do
 			user.AddConversation(self);
 	)
-	pre card users > 1
-	post members = users and topic = t; -- and forall user in set members & user.GetConversations() inter {self} = {self};
+	pre card users >= minMembers
+	post members = users and topic = t and forall user in set members & user.conversations inter {self} = {self};
 
 	public AddMember : User ==> ()
 	AddMember(u) == members := members union {u}
@@ -31,18 +31,18 @@ operations
 	
 	public RemoveMember : User ==> ()
 	RemoveMember(u) == members := members \ {u}
-	pre members inter {u} = {u}
-	post members inter {u} = {};
+	pre members inter {u} = {u} and card members > minMembers
+	post members inter {u} = {} and card members >= minMembers;
 
 	public SetTopic : Common`String1 ==> ()
-	SetTopic(t) == topic := t;
+	SetTopic(t) == topic := t
 	--pre
-	--post;
+	post topic = t;
 
 	public AddMessage : Common`Date * Common`String1 * User ==> ()
 	AddMessage(d,t,s) == (
 		dcl msg : Message := mk_Message(d,t,s);
-		dcl myMap : Messages := { card dom messages |-> msg };
+		dcl myMap : Messages := { card dom messages + 1 |-> msg };
 		messages := messages munion myMap;
 	);
 	--pre

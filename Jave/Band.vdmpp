@@ -17,11 +17,21 @@ operations
 	--pre
 	--post;
 
+	public AddMember : Artist ==> ()
+	AddMember(a) == members := members union {a}
+	pre members inter {a} = {}
+	post members inter {a} = {a};
+	
+	public RemoveMember : Artist ==> ()
+	RemoveMember(a) == members := members \ {a}
+	pre members inter {a} = {a}
+	post members inter {a} = {};
+
 	public GetMembers : Common`String ==> Artist`Artists
 	GetMembers(searchStr) == (
 		dcl results : Artist`Artists := {};
 		for all artist in set members do
-			if(Common`ContainsStr2(artist.stageName,searchStr)) then
+			if(Common`ContainsStr2(artist.name,searchStr)) then
 					results := results union {artist};
 		return results;
 	);

@@ -31,7 +31,7 @@ operations
 	GetBands(searchStr) == (
 		dcl results : Bands := {};
 		for all band in set memberOf do
-			if(Common`ContainsStr2(band.stageName,searchStr)) then
+			if(Common`ContainsStr2(band.name,searchStr)) then
 					results := results union {band};
 		return results;
 	);
@@ -42,7 +42,7 @@ operations
 	GetArtists(searchStr) == (
 		dcl results : Artists := {};
 		for all artist in set artists do
-			if(Common`ContainsStr2(artist.stageName,searchStr)) then
+			if(Common`ContainsStr2(artist.name,searchStr)) then
 					results := results union {artist};
 		return results;
 	);
