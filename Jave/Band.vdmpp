@@ -1,21 +1,24 @@
 class Band is subclass of PublicUser
 types
 	public static Members = set1 of Artist;
+	public static Bands = set of Band;
 values
 -- TODO Define values here
 instance variables
 	-- Variables declared public to facilitate queries
 	public members : Members;
+	public static bands : Bands := {};
 operations
-	public Band : Common`String1 * Common`Address * Members ==> Band
-	Band(stgName,loc,m) == (
+	public Band : PrivateUser * Common`String1 * Common`Address * Members ==> Band
+	Band(privateUser,stgName,loc,m) == (
 		members := m;
 		for all member in set members do
 			member.AddBand(self);
-		PublicUser(stgName,loc);
-	);
+		bands := bands union {self};
+		PublicUser(privateUser,stgName,loc);
+	)
 	--pre
-	--post;
+	post bands inter {self} = {self};
 
 	public AddMember : Artist ==> ()
 	AddMember(a) == members := members union {a}

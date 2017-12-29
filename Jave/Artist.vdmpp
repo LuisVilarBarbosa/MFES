@@ -9,11 +9,11 @@ instance variables
 	public memberOf : Bands;
 	public static artists : Artists := {};
 operations
-	public Artist : Common`String1 * Common`Address ==> Artist
-	Artist(stgName,loc) == (
+	public Artist : PrivateUser * Common`String1 * Common`Address ==> Artist
+	Artist(privateUser,stgName,loc) == (
 		memberOf := {};
 		artists := artists union {self};
-		PublicUser(stgName,loc);
+		PublicUser(privateUser,stgName,loc);
 	);
 	-- post
 	

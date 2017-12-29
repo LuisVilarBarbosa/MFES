@@ -25,6 +25,11 @@ operations
 	)
 	pre forall u in set privateUsers & u.email <> e
 	post privateUsers inter {self} = {self};
+
+	public AddPublicUser : PublicUser ==> ()
+	AddPublicUser(publicUser) == myPublicUsers := myPublicUsers union {publicUser}
+	pre myPublicUsers inter {publicUser} = {}
+	post myPublicUsers inter {publicUser} = {publicUser};
 functions
 -- TODO Define functiones here
 traces
