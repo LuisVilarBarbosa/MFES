@@ -13,9 +13,7 @@ types
 		day : nat1
 		inv d == d.month  <= 12 and d.day <= DaysOfMonth(d.year, d.month);
 values
--- TODO Define values here
 instance variables
--- TODO Define instance variables here
 operations
 	public static ContainsStr2 : String1 * String1 ==> bool
 	ContainsStr2(str1,str2) == (
@@ -30,8 +28,6 @@ operations
 		);
 		return false;
 	);
-	--pre
-	--post;
 functions
 	public static DaysOfMonth : nat1 * nat1 +> nat1
 	DaysOfMonth(y,m) == (
@@ -47,13 +43,10 @@ functions
 
 	public static CreateAddress : String * String * String1 * String +> Address
 	CreateAddress(stt,num,c,zip) == mk_Address(stt,num,c,zip);
-	--pre
-	--post
 
 	public static CreateDate : nat1 * nat1 * nat1 +> Date
-	CreateDate(y,m,d) == mk_Date(y,m,d);
-	--pre
-	--post
+	CreateDate(y,m,d) == mk_Date(y,m,d)
+	pre m >= 1 and m <= 12 and d >=1 and d <= DaysOfMonth(y,m) -- invariant verification
+	post RESULT.year = y and RESULT.month = m and RESULT.day = d; -- invariant verification by verifying that the assignment is correct (already passed precondition)
 traces
--- TODO Define Combinatorial Test Traces here
 end Common

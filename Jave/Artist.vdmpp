@@ -3,9 +3,7 @@ types
 	public static Bands = set of Band;
 	public static Artists = set of Artist;
 values
--- TODO Define values here
 instance variables
-	-- Variables declared public to facilitate queries
 	public memberOf : Bands;
 	public static artists : Artists := {};
 operations
@@ -15,19 +13,16 @@ operations
 		artists := artists union {self};
 		PublicUser(stgName,loc);
 	);
-	-- post
 	
 	public AddBand : Band ==> ()
 	AddBand(b) == memberOf := memberOf union {b}
-	pre memberOf inter {b} = {}
-	post memberOf inter {b} = {b};
+	pre b not in set memberOf
+	post b in set memberOf and memberOf~ = memberOf \ {b};
 	
 	public RemoveBand : Band ==> ()
 	RemoveBand(b) == memberOf := memberOf \ {b}
-	pre memberOf inter {b} = {b}
-	post memberOf inter {b} = {};
+	pre b in set memberOf
+	post b not in set memberOf and memberOf~ = memberOf union {b};
 functions
--- TODO Define functiones here
 traces
--- TODO Define Combinatorial Test Traces here
 end Artist
