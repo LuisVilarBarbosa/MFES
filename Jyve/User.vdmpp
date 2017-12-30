@@ -24,7 +24,7 @@ operations
 			c.AddMember(self);
 		);
 	)
-	post c in set conversations and conversations~ = conversations \ {c} and self in set c.members;
+	post c in set conversations and (conversations~ = conversations or conversations~ = conversations \ {c}) and self in set c.members;
 
 	public RemoveConversation : Conversation ==> ()
 	RemoveConversation(c) == (
@@ -33,7 +33,7 @@ operations
 			c.RemoveMember(self);
 		);
 	)
-	post c not in set conversations and conversations~ = conversations union {c} and self not in set c.members;
+	post c not in set conversations and (conversations~ = conversations or conversations~ = conversations union {c}) and self not in set c.members;
 functions
 traces
 end User
