@@ -1,104 +1,371 @@
 class JyveTest is subclass of MyTestCase
 /*
  Contains the test cases for Jyve.
- Illustrates a scenario-based testing approach.
- The test cases cover all usage scenarios.
+ The test cases cover all usage scenarios,
+ merging the creations and deletions in the
+ same test to maintain tests integrity.
 */
+types
 values
-	private static username = "luis";
+	private static username1 = "luis";
+	private static username2 = "luis2";
 	private static email1 = "luis@fe.up.pt";
 	private static email2 = "luis2@fe.up.pt";
 	private static email3 = "luis3@fe.up.pt";
 	private static password1 = "12345678";
 	private static password2 = "1234567";
+	private static artistName1 = "artist1";
+	private static artistName2 = "artist2";
+	private static artistName3 = "artist3";
+	private static artistName4 = "artist4";
+	private static artistName5 = "artist5";
+	private static bandName1 = "band1";
+	private static bandName2 = "band2";
+	private static bandName3 = "band3";
 	private static address = Common`CreateAddress("","","Porto","");
 instance variables
-	private privateUser1: PrivateUser := new PrivateUser(username,email1,password1);
+	private privateUser1 : PrivateUser;
+	private privateUser2 : PrivateUser;
 operations
 	public static main: () ==> ()
 	main() ==
 	(
 		dcl jyveTest: JyveTest := new JyveTest();
-		jyveTest.testCreatePrivateUser();
+		
+		IO`print("testCreateArtist: ");
 		jyveTest.testCreateArtist();
+		IO`println("Success");
+
+		IO`print("testCreateBand: ");
 		jyveTest.testCreateBand();
+		IO`println("Success");
+
+		IO`print("testSetPrivateUserPassword: ");
 		jyveTest.testSetPrivateUserPassword();
-		jyveTest.testCreatePlace();
-		jyveTest.testRemovePlace();
-		jyveTest.testCreateShow();
-		jyveTest.testRemoveShow();
+		IO`println("Success");
+
+		IO`print("testCreateRemovePlace: ");
+		jyveTest.testCreateRemovePlace();
+		IO`println("Success");
+
+		IO`print("testCreateRemoveShow: ");
+		jyveTest.testCreateRemoveShow();
+		IO`println("Success");
+
+		IO`print("testSetUserName: ");
+		jyveTest.testSetUserName();
+		IO`println("Success");
+
+		IO`print("testAddRemoveConversation: ");
+		jyveTest.testAddRemoveConversation();
+		IO`println("Success");
+
+		IO`print("testAddMemberToConversation: ");
+		jyveTest.testAddMemberToConversation();
+		IO`println("Success");
+
+		IO`print("testSetConversationTopic: ");
+		jyveTest.testSetConversationTopic();
+		IO`println("Success");
+
+		IO`print("testAddMessageToConversation: ");
+		jyveTest.testAddMessageToConversation();
+		IO`println("Success");
+
+		IO`print("testAddRemoveArtistBand: ");
+		--jyveTest.testAddRemoveArtistBand();
+		IO`println("Success");
+
+		IO`print("testAddRemoveBandMember: ");
+		jyveTest.testAddRemoveBandMember();
+		IO`println("Success");
+
+		IO`print("testSetPlaceName: ");
+		jyveTest.testSetPlaceName();
+		IO`println("Success");
+
+		IO`print("testSetPlaceDescription: ");
+		jyveTest.testSetPlaceDescription();
+		IO`println("Success");
+
+		IO`print("testGetShowsSortedByStartDate: ");
+		--jyveTest.testGetShowsSortedByStartDate();
 		IO`println("Success");
 	);
-	
-	/* Tests to methods of PrivateUser */
-	private testCreatePrivateUser : () ==> ()
-	testCreatePrivateUser() == (
-		dcl privUser1 : PrivateUser := new PrivateUser(username,email2,password1);
+
+
+	/* Constructor */
+	private JyveTest : () ==> JyveTest
+	JyveTest() == (
+		privateUser1 := new PrivateUser(username1,email1,password1);
+		privateUser2 := new PrivateUser(username1,email2,password1);
 		--this line should make the test fail: email already used
-		--dcl privUser1 : PrivateUser := new PrivateUser(username,email1,password1);
+		--dcl privUser1 : PrivateUser := new PrivateUser(username1,email1,password1);
 		--this line should make the test fail: password length less than 8
-		--dcl privUser1 : PrivateUser := new PrivateUser(username,email3,password2);
-		assertTrue(true);
+		--dcl privUser1 : PrivateUser := new PrivateUser(username1,email3,password2);
+		assertTrue(privateUser1 <> privateUser2);
 	);
-	
+
+
+	/* Tests to methods of PrivateUser */	
 	private testCreateArtist : () ==> ()
 	testCreateArtist() == (
-		privateUser1.CreateArtist("artist1",address);
-		privateUser1.CreateArtist("artist2",address);
-	);
+		privateUser1.CreateArtist(artistName1,address);
+		privateUser1.CreateArtist(artistName2,address);
+	)
+	pre card privateUser1.myArtists = 0
+	post card privateUser1.myArtists = 2;
 
 	private testCreateBand : () ==> ()
 	testCreateBand() == (
-		privateUser1.CreateBand("band",address,Artist`artists);
+		privateUser1.CreateBand(bandName1,address,privateUser1.myArtists);
 		--this line should make the test fail: the same artist in a set that must have at least two distict artists
-		--let artist1 in set Artist`artists in privateUser1.CreateBand("band",address,{artist1,artist1});
+		--let artist1 in set Artist`artists in privateUser1.CreateBand(bandName2,address,{artist1,artist1});
 	)
-	pre card Artist`artists = 2;	-- this is the expected length, but it can have more elements
+	pre card privateUser1.myArtists = 2	-- this is the expected length, but it can have more elements
+		and card privateUser1.myBands = 0
+	post card privateUser1.myBands = 1;
 	
 	private testSetPrivateUserPassword : () ==> ()
 	testSetPrivateUserPassword() == (
+		dcl oldPass : PrivateUser`Password := privateUser1.password;
 		dcl newPass : PrivateUser`Password := "123456789";
 		privateUser1.SetPassword(newPass);
 		assertEqual(newPass,privateUser1.password);
 		--this line should make the test fail: password length less than 8
 		--privateUser1.SetPassword(password2);
-	);
+		privateUser1.SetPassword(oldPass);
+	)
+	post privateUser1~.password = privateUser1.password;
 
-	private testCreatePlace : () ==> ()
-	testCreatePlace() == (
+	private testCreateRemovePlace : () ==> ()
+	testCreateRemovePlace() == (
 		privateUser1.CreatePlace("FEUP","",address);
 		--this line should make the test fail: empty name
 		--privateUser1.CreatePlace("","",address);
-	);
 
-	private testRemovePlace : () ==> ()
-	testRemovePlace() == (
-	let p in set privateUser1.myPlaces in (
+		let p in set privateUser1.myPlaces in (
 			privateUser1.RemovePlace(p);
 			--this line should make the test fail: non-existent place
 			--privateUser1.RemovePlace(p);
 		);
-	);
 
-	private testCreateShow : () ==> ()
-	testCreateShow() == (
-		dcl date : Common`Date := Common`CreateDate(2017,12,30);
+		while(card privateUser1.myPlaces > 0) do
+			let p in set privateUser1.myPlaces in privateUser1.RemovePlace(p);
+	)
+	pre card privateUser1.myPlaces = 0
+	post card privateUser1.myPlaces = 0;
+
+	private testCreateRemoveShow : () ==> ()
+	testCreateRemoveShow() == (
+		dcl date1 : Common`Date := Common`CreateDate(2016,2,29);
+		dcl date2 : Common`Date := Common`CreateDate(2017,12,30);
 		privateUser1.CreatePlace("FEUP","",address);
 		let place in set privateUser1.myPlaces in (
-			privateUser1.CreateShow("MFES show",privateUser1.myArtists,date,date,place,"");
+			privateUser1.CreateShow("MFES show1",privateUser1.myArtists,date2,date2,place,"");
+			privateUser1.CreateShow("MFES show2",privateUser1.myBands,date1,date2,place,"");
 			--this line should make the test fail: end date before start date
-			--privateUser1.CreateShow("MFES show",{artist1,artist2},date,date2,place,"");	-- TODO
+			--let artist1, artist2 in set Artist`artists be st artist1 <> artist2 in privateUser1.CreateShow("MFES show",{artist1,artist2},date2,date1,place,"");
+			privateUser1.RemovePlace(place);	-- the place can still exist associated to shows, but it is not 'active' and will not appear anywhere else
 		);
-	)
-	pre card privateUser1.myArtists = 2;	-- this is the expected length, but it can have 1 or more elements
 
-	private testRemoveShow : () ==> ()
-	testRemoveShow() == (
 		let show in set privateUser1.myShows in (
 			privateUser1.RemoveShow(show);
 			--this line should make the test fail: non-existent show
 			--privateUser1.RemoveShow(show);
 		);
+
+		while(card privateUser1.myPlaces > 0) do
+			let place in set privateUser1.myPlaces in privateUser1.RemovePlace(place);
+
+		while(card privateUser1.myShows > 0) do
+			let show in set privateUser1.myShows in privateUser1.RemoveShow(show);
+	)
+	pre card privateUser1.myArtists = 2	-- this is the expected length, but it can have 1 or more elements
+		and card privateUser1.myBands = 1
+		and card privateUser1.myPlaces = 0
+		and card privateUser1.myShows = 0
+	post card privateUser1.myPlaces = 0 and card privateUser1.myShows = 0;
+
+
+	/* Tests to methods of User */
+	private testSetUserName : () ==> ()
+	testSetUserName() == (
+		dcl oldName : Common`String1 := privateUser1.name;
+		privateUser1.SetName(username2);
+		assertEqual(username2,privateUser1.name);
+		privateUser1.SetName(oldName);
+	)
+	pre privateUser1.name <> username2
+	post privateUser1~.name = privateUser1.name;
+
+	private testAddRemoveConversation : () ==> ()
+	testAddRemoveConversation() == (
+		dcl members : Conversation`Users := {privateUser1};
+		dcl c1 : Conversation := new Conversation("Test conversation",members);
+		let c2 in set privateUser1.conversations in (
+			assertEqual(c1,c2);
+			assertEqual(c2.members,members);
+		);
+
+		let c in set privateUser1.conversations in privateUser1.RemoveConversation(c);
+
+		while(card privateUser1.conversations > 0) do
+			let c in set privateUser1.conversations in privateUser1.RemoveConversation(c);
+	)
+	pre card privateUser1.conversations = 0
+	post card privateUser1.conversations = 0;
+
+	/* Tests to methods of Conversation */
+	private testAddMemberToConversation : () ==> ()
+	testAddMemberToConversation() == (
+		dcl topic1 : Common`String1 := "Topic";
+		dcl c1 : Conversation := new Conversation(topic1,{privateUser1});
+		c1.AddMember(privateUser2);
+		assertEqual(c1.members,{privateUser1,privateUser2});
+		
+		while(card privateUser1.conversations > 0) do
+			let c2 in set privateUser1.conversations in privateUser1.RemoveConversation(c2);
+		
+		while(card privateUser2.conversations > 0) do
+			let c2 in set privateUser2.conversations in privateUser2.RemoveConversation(c2);
+	)
+	pre card privateUser1.conversations = 0 and card privateUser2.conversations = 0
+	post card privateUser1.conversations = 0 and card privateUser2.conversations = 0;
+
+	private testSetConversationTopic : () ==> ()
+	testSetConversationTopic() == (
+		dcl topic1 : Common`String1 := "Topic1";
+		dcl topic2 : Common`String1 := "Topic2";
+		dcl c1 : Conversation := new Conversation(topic1,{privateUser1});
+		c1.SetTopic(topic2);
+		assertEqual(topic2,c1.topic);
+		
+		while(card privateUser1.conversations > 0) do
+			let c2 in set privateUser1.conversations in privateUser1.RemoveConversation(c2);
+	)
+	pre card privateUser1.conversations = 0
+	post card privateUser1.conversations = 0;
+
+	private testAddMessageToConversation : () ==> ()
+	testAddMessageToConversation() == (
+		dcl date : Common`Date := Common`CreateDate(2017,12,30);
+		dcl text : Common`String1 := "Text";
+		dcl c1 : Conversation := new Conversation("Topic",{privateUser1});
+		c1.AddMessage(date,text,privateUser1);
+		let m1 in set rng c1.messages in assertTrue(m1.date = date and m1.text = text and m1.sender = privateUser1);
+		
+		while(card privateUser1.conversations > 0) do
+			let c2 in set privateUser1.conversations in privateUser1.RemoveConversation(c2);
+	)
+	pre card privateUser1.conversations = 0
+	post card privateUser1.conversations = 0;
+
+	/* Tests to methods of PublicUser */
+
+
+	/* Tests to methods of Artist */
+	/*private testAddRemoveArtistBand : () ==> ()
+	testAddRemoveArtistBand() == (
+		privateUser1.CreateArtist(,address);
+		privateUser1.CreateArtist(,address);
+		privateUser1.CreateArtist(,address);
+		let a1,a2,a3 in set privateUser1.myArtists be st (a1 <> a2 and a1 <> a3 and a2 <> a3) in (
+			privateUser1.CreateBand(bandName3,address,{a1,a2});
+			let b in set privateUser1.myBands in (
+				privateUser1.RemoveBand(
+				assertTrue(true);
+				b.AddMember(a3);
+				b.RemoveMember(a3);
+				this line should make the test fail: non-existant member
+				b.RemoveMember(a3);
+			);
+		);
+	);*/
+
+
+	/* Tests to methods of Band */
+	private testAddRemoveBandMember : () ==> ()
+	testAddRemoveBandMember() == (
+		privateUser1.CreateArtist(artistName3,address);
+		privateUser1.CreateArtist(artistName4,address);
+		privateUser1.CreateArtist(artistName5,address);
+		let a1,a2,a3 in set privateUser1.myArtists be st (a1 <> a2 and a1 <> a3 and a2 <> a3) in (
+			privateUser1.CreateBand(bandName3,address,{a1,a2});
+			let b in set privateUser1.myBands in (
+				assertTrue(true);
+				--b.AddMember(a3);
+				--b.RemoveMember(a3);
+				--this line should make the test fail: non-existant member
+				--b.RemoveMember(a3);
+			);
+		);
 	);
 
+
+	/* Tests to methods of Place */
+	private testSetPlaceName : () ==> ()
+	testSetPlaceName() == (
+		privateUser1.CreatePlace("FEUP","",address);
+		let place in set privateUser1.myPlaces in (
+			dcl oldName : Common`String1 := place.name;
+			place.SetName("FEUP2");
+			assertTrue(place.name <> oldName);
+		);
+		while(card privateUser1.myPlaces > 0) do
+			let place in set privateUser1.myPlaces in privateUser1.RemovePlace(place);
+	)
+	pre card privateUser1.myPlaces = 0
+	post card privateUser1.myPlaces = 0;
+
+	private testSetPlaceDescription: () ==> ()
+	testSetPlaceDescription() == (
+		privateUser1.CreatePlace("FEUP","",address);
+		let place in set privateUser1.myPlaces in (
+			dcl oldDescription : Common`String := place.description;
+			place.SetDescription("New description");
+			assertTrue(place.description <> oldDescription);
+		);
+		while(card privateUser1.myPlaces > 0) do
+			let place in set privateUser1.myPlaces in privateUser1.RemovePlace(place);
+	)
+	pre card privateUser1.myPlaces = 0
+	post card privateUser1.myPlaces = 0;
+
+
+	/* Tests to methods of Calendar */
+	private testGetShowsSortedByStartDate : () ==> ()
+	testGetShowsSortedByStartDate() == (
+		testGetShowsSortedByStartDateAux1();
+		testGetShowsSortedByStartDateAux2();
+	);
+
+	private testGetShowsSortedByStartDateAux1 : () ==> ()
+	testGetShowsSortedByStartDateAux1() == (
+		dcl date1 : Common`Date := Common`CreateDate(2016,2,29);
+		dcl date2 : Common`Date := Common`CreateDate(2017,12,30);
+		privateUser1.CreatePlace("FEUP","",address);
+		let place in set privateUser1.myPlaces in (
+			privateUser1.CreateShow("Show1",privateUser1.myArtists,date1,date2,place,"");
+			privateUser1.CreateShow("Show2",privateUser1.myBands,date2,date2,place,"");
+		);
+	);
+
+	private testGetShowsSortedByStartDateAux2 : () ==> ()
+	testGetShowsSortedByStartDateAux2() == (
+		dcl shows : Calendar`Shows := Calendar`GetShowsSortedByStartDate();
+		for i=0 to len shows - 1 do
+			for j=i+1 to len shows - 1 do
+				assertTrue(Common`isBeforeOrEqual(shows(i).startDate, shows(j).startDate));
+
+		while(card privateUser1.myPlaces > 0) do
+			let place in set privateUser1.myPlaces in privateUser1.RemovePlace(place);
+
+		while(card privateUser1.myShows > 0) do
+			let show in set privateUser1.myShows in privateUser1.RemoveShow(show);
+	)
+	post card privateUser1.myPlaces = 0 and card privateUser1.myShows = 0;
+
+functions
+traces
 end JyveTest
