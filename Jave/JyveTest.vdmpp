@@ -5,62 +5,55 @@ class JyveTest is subclass of MyTestCase
  The test cases cover all usage scenarios.
 */
 values
+	private static username = "luis";
+	private static email1 = "luis@fe.up.pt";
+	private static email2 = "luis2@fe.up.pt";
+	private static email3 = "luis3@fe.up.pt";
+	private static password1 = "12345678";
+	private static password2 = "1234567";
 	private static address = Common`CreateAddress("","","Porto","");
 instance variables
-	private privateUser1: PrivateUser := new PrivateUser("luis","luis@fe.up.pt","12345678");
-	private artist1: Artist := new Artist("artist",address); --privateUser.AddArtist
-	private artist2: Artist := new Artist("artist",address); --privateUser.AddBand
-	private band1: Band := new Band("band",address,{artist1,artist2});
+	private privateUser1: PrivateUser := new PrivateUser(username,email1,password1);
 operations
 	public static main: () ==> ()
 	main() ==
 	(
 		dcl jyveTest: JyveTest := new JyveTest();
-		
-		IO`print("testCreatePrivateUsers -> ");
-		jyveTest.testCreatePrivateUsers();
-		IO`println("Success");
-
-		IO`print("testCreatePublicUsers -> ");
-		--jyveTest.testCreatePublicUsers();
-		IO`println("Success");
-
-		IO`print("testSetPrivateUserPassword -> ");
+		jyveTest.testCreatePrivateUser();
+		jyveTest.testCreateArtist();
+		jyveTest.testCreateBand();
 		jyveTest.testSetPrivateUserPassword();
-		IO`println("Success");
-
-		IO`print("testCreatePlace -> ");
 		jyveTest.testCreatePlace();
-		IO`println("Success");
-
-		IO`print("testRemovePlace -> ");
 		jyveTest.testRemovePlace();
-		IO`println("Success");
-
-		IO`print("testCreateShow -> ");
 		jyveTest.testCreateShow();
-		IO`println("Success");
-
-		IO`print("testRemoveShow -> ");
 		jyveTest.testRemoveShow();
 		IO`println("Success");
 	);
 	
-	private testCreatePrivateUsers : () ==> ()
-	testCreatePrivateUsers() == (
-		dcl privUser1 : PrivateUser := new PrivateUser("luis","luis2@fe.up.pt","12345678");
+	/* Tests to methods of PrivateUser */
+	private testCreatePrivateUser : () ==> ()
+	testCreatePrivateUser() == (
+		dcl privUser1 : PrivateUser := new PrivateUser(username,email2,password1);
 		--this line should make the test fail: email already used
-		--dcl privUser1 : PrivateUser := new PrivateUser("luis","luis@fe.up.pt","12345678");
+		--dcl privUser1 : PrivateUser := new PrivateUser(username,email1,password1);
 		--this line should make the test fail: password length less than 8
-		--dcl privUser1 : PrivateUser := new PrivateUser("luis","luis@fe.up.pt","1234567");
+		--dcl privUser1 : PrivateUser := new PrivateUser(username,email3,password2);
 		assertTrue(true);
 	);
 	
-	private testCreatePublicUsers : () ==> ()
-	testCreatePublicUsers() == 
-		is not yet specified
+	private testCreateArtist : () ==> ()
+	testCreateArtist() == (
+		privateUser1.CreateArtist("artist1",address);
+		privateUser1.CreateArtist("artist2",address);
+	);
+
+	private testCreateBand : () ==> ()
+	testCreateBand() == (
+		privateUser1.CreateBand("band",address,Artist`artists);
 		--this line should make the test fail: the same artist in a set that must have at least two distict artists
-	;
+		--let artist1 in set Artist`artists in privateUser1.CreateBand("band",address,{artist1,artist1});
+	)
+	pre card Artist`artists = 2;	-- this is the expected length, but it can have more elements
 	
 	private testSetPrivateUserPassword : () ==> ()
 	testSetPrivateUserPassword() == (
@@ -68,7 +61,7 @@ operations
 		privateUser1.SetPassword(newPass);
 		assertEqual(newPass,privateUser1.password);
 		--this line should make the test fail: password length less than 8
-		--privateUser1.SetPassword("1234567");
+		--privateUser1.SetPassword(password2);
 	);
 
 	private testCreatePlace : () ==> ()
@@ -92,11 +85,12 @@ operations
 		dcl date : Common`Date := Common`CreateDate(2017,12,30);
 		privateUser1.CreatePlace("FEUP","",address);
 		let place in set privateUser1.myPlaces in (
-			privateUser1.CreateShow("MFES show",{artist1,artist2},date,date,place,"");
+			privateUser1.CreateShow("MFES show",privateUser1.myPublicUsers,date,date,place,"");
 			--this line should make the test fail: end date before start date
 			--privateUser1.CreateShow("MFES show",{artist1,artist2},date,date2,place,"");	-- TODO
 		);
-	);
+	)
+	pre card privateUser1.myPublicUsers = 3;	-- this is the expected length, but it can have 1 or more elements
 
 	private testRemoveShow : () ==> ()
 	testRemoveShow() == (

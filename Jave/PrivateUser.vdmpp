@@ -37,8 +37,12 @@ operations
 	pre len p >= minLength
 	post password = p;
 
-	public CreatePublicUser : Common`String1 * Common`Address ==> ()
-	CreatePublicUser(n,addr) == myPublicUsers := myPublicUsers union {new PublicUser(n,addr)}
+	public CreateArtist : Common`String1 * Common`Address ==> ()
+	CreateArtist(n,addr) == myPublicUsers := myPublicUsers union {new Artist(n,addr)}
+	;--pre myPublicUsers inter {publicUser} = {};
+
+	public CreateBand : Common`String1 * Common`Address * Band`Members ==> ()
+	CreateBand(n,addr,members) == myPublicUsers := myPublicUsers union {new Band(n,addr,members)}
 	;--pre myPublicUsers inter {publicUser} = {};
 
 	public CreatePlace : Common`String1 * Common`String * Common`Address ==> ()
