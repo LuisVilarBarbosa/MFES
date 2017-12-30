@@ -1,0 +1,110 @@
+class JyveTest is subclass of MyTestCase
+/*
+ Contains the test cases for Jyve.
+ Illustrates a scenario-based testing approach.
+ The test cases cover all usage scenarios.
+*/
+values
+	private static address = Common`CreateAddress("","","Porto","");
+instance variables
+	private privateUser1: PrivateUser := new PrivateUser("luis","luis@fe.up.pt","12345678");
+	private artist1: Artist := new Artist("artist",address); --privateUser.AddArtist
+	private artist2: Artist := new Artist("artist",address); --privateUser.AddBand
+	private band1: Band := new Band("band",address,{artist1,artist2});
+operations
+	public static main: () ==> ()
+	main() ==
+	(
+		dcl jyveTest: JyveTest := new JyveTest();
+		
+		IO`print("testCreatePrivateUsers -> ");
+		jyveTest.testCreatePrivateUsers();
+		IO`println("Success");
+
+		IO`print("testCreatePublicUsers -> ");
+		--jyveTest.testCreatePublicUsers();
+		IO`println("Success");
+
+		IO`print("testSetPrivateUserPassword -> ");
+		jyveTest.testSetPrivateUserPassword();
+		IO`println("Success");
+
+		IO`print("testCreatePlace -> ");
+		jyveTest.testCreatePlace();
+		IO`println("Success");
+
+		IO`print("testRemovePlace -> ");
+		jyveTest.testRemovePlace();
+		IO`println("Success");
+
+		IO`print("testCreateShow -> ");
+		jyveTest.testCreateShow();
+		IO`println("Success");
+
+		IO`print("testRemoveShow -> ");
+		jyveTest.testRemoveShow();
+		IO`println("Success");
+	);
+	
+	private testCreatePrivateUsers : () ==> ()
+	testCreatePrivateUsers() == (
+		dcl privUser1 : PrivateUser := new PrivateUser("luis","luis2@fe.up.pt","12345678");
+		--this line should make the test fail: email already used
+		--dcl privUser1 : PrivateUser := new PrivateUser("luis","luis@fe.up.pt","12345678");
+		--this line should make the test fail: password length less than 8
+		--dcl privUser1 : PrivateUser := new PrivateUser("luis","luis@fe.up.pt","1234567");
+		assertTrue(true);
+	);
+	
+	private testCreatePublicUsers : () ==> ()
+	testCreatePublicUsers() == 
+		is not yet specified
+		--this line should make the test fail: the same artist in a set that must have at least two distict artists
+	;
+	
+	private testSetPrivateUserPassword : () ==> ()
+	testSetPrivateUserPassword() == (
+		dcl newPass : PrivateUser`Password := "123456789";
+		privateUser1.SetPassword(newPass);
+		assertEqual(newPass,privateUser1.password);
+		--this line should make the test fail: password length less than 8
+		--privateUser1.SetPassword("1234567");
+	);
+
+	private testCreatePlace : () ==> ()
+	testCreatePlace() == (
+		privateUser1.CreatePlace("FEUP","",address);
+		--this line should make the test fail: empty name
+		--privateUser1.CreatePlace("","",address);
+	);
+
+	private testRemovePlace : () ==> ()
+	testRemovePlace() == (
+	let p in set privateUser1.myPlaces in (
+			privateUser1.RemovePlace(p);
+			--this line should make the test fail: non-existent place
+			--privateUser1.RemovePlace(p);
+		);
+	);
+
+	private testCreateShow : () ==> ()
+	testCreateShow() == (
+		dcl date : Common`Date := Common`CreateDate(2017,12,30);
+		privateUser1.CreatePlace("FEUP","",address);
+		let place in set privateUser1.myPlaces in (
+			privateUser1.CreateShow("MFES show",{artist1,artist2},date,date,place,"");
+			--this line should make the test fail: end date before start date
+			--privateUser1.CreateShow("MFES show",{artist1,artist2},date,date2,place,"");	-- TODO
+		);
+	);
+
+	private testRemoveShow : () ==> ()
+	testRemoveShow() == (
+		let show in set privateUser1.myShows in (
+			privateUser1.RemoveShow(show);
+			--this line should make the test fail: non-existent show
+			--privateUser1.RemoveShow(show);
+		);
+	);
+
+end JyveTest

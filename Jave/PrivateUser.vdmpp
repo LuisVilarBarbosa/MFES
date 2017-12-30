@@ -34,7 +34,7 @@ operations
 
 	public SetPassword : Password ==> ()
 	SetPassword(p) == password := p
-	--pre
+	pre len p >= minLength
 	post password = p;
 
 	public CreatePublicUser : Common`String1 * Common`Address ==> ()
@@ -50,8 +50,8 @@ operations
 		myPlaces := myPlaces \ {p};
 		Place`RemovePlace(p);
 	)
-	pre myPlaces inter {p} = {}
-	post myPlaces inter {p} = {p};
+	pre p in set myPlaces
+	post p not in set myPlaces and myPlaces~ = myPlaces union {p};
 
 	public CreateShow : Common`String1 * Calendar`Performers * Common`Date * Common`Date * Place * Common`String ==> ()
 	CreateShow(n,ps,sd,ed,pl,desc) == (
@@ -67,8 +67,8 @@ operations
 		myShows := myShows \ {s};
 		Calendar`RemoveShow(s);
 	)
-	pre myShows inter {s} = {}
-	post myShows inter {s} = {s};
+	pre s in set myShows
+	post s not in set myShows and myShows~ = myShows union {s};
 functions
 -- TODO Define functiones here
 traces
