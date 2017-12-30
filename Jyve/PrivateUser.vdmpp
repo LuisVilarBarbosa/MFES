@@ -1,7 +1,7 @@
 class PrivateUser is subclass of User
 types
 	public static Email = Common`String1
-		;--inv e == isEmail(e);
+		inv e == isEmail(e);
 	public static Password = Common`String1
 		inv p == len p >= minLength;
 	public static Places = set of Place;
@@ -29,7 +29,7 @@ operations
 		privateUsers := privateUsers union {self};
 		User(n);
 	)
-	pre /*isEmail(e) and*/ forall u in set privateUsers & u.email <> e	-- invariant verification on 'e'
+	pre isEmail(e) and forall u in set privateUsers & u.email <> e	-- invariant verification on 'e'
 	post email = e and password = pass and myArtists = {} and myBands = {} and myPlaces = {}  -- invariant verification on 'e' by verifying that the assignment is correct (already passed precondition)
 		and myShows = {} and self in set privateUsers;
 
@@ -74,7 +74,7 @@ operations
 	pre s in set myShows
 	post s not in set myShows and myShows~ = myShows union {s};
 functions
-	private static isEmail : Email +> bool
+	private static isEmail : Common`String1 +> bool
 	isEmail(email) == exists1 at in seq email & at = '@';
 traces
 end PrivateUser
