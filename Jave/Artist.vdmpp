@@ -12,7 +12,8 @@ operations
 		memberOf := {};
 		artists := artists union {self};
 		PublicUser(stgName,loc);
-	);
+	)
+	post memberOf = {} and artists~ = artists \ {self};
 	
 	public AddBand : Band ==> ()
 	AddBand(b) == memberOf := memberOf union {b}

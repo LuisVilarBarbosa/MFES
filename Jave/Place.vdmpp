@@ -2,9 +2,7 @@ class Place
 types
 	public static Places = set of Place;
 values
--- TODO Define values here
 instance variables
-	-- Variables declared public to facilitate queries
 	public name : Common`String1;
 	public description : Common`String;
 	public location : Common`Address;
@@ -20,25 +18,22 @@ operations
 		positive_votes := 0;
 		negative_votes := 0;
 		places := places union {self};
-	);
-	-- post
+	)
+	post name = n and description = d and location = l and positive_votes = 0
+		and negative_votes = 0 and places~ = places \ {self};
 
 	public SetName : Common`String1 ==> ()
 	SetName(n) == name := n
-	--pre
 	post name = n;
 
 	public SetDescription : Common`String ==> ()
 	SetDescription(d) == description := d
-	--pre
 	post description = d;
 
 	public static RemovePlace : Place ==> ()
 	RemovePlace(p) == places := places \ {p}
-	pre places inter {p} = {p}
-	post places inter {p} = {};
+	pre p in set places
+	post p not in set places and places~ = places union {p};
 functions
--- TODO Define functiones here
 traces
--- TODO Define Combinatorial Test Traces here
 end Place

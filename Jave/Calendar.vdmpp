@@ -1,7 +1,6 @@
 class Calendar
 types
-	public static Performers = set of PublicUser
-		;-- no band and its artists (inv)?
+	public static Performers = set1 of PublicUser;
 	public static Show ::
 		name : Common`String1
 		performers : Performers
@@ -9,28 +8,46 @@ types
 		endDate : Common`Date
 		place : Place
 		description : Common`String;
-	public static Shows = set of Show --ordered by date
-		;--inv s == forall i, j in set {0..s.length-1} & i < j => s(i) <= s(j);
+	public static Shows = seq of Show;
+	private static MyShows = set of Show;
 values
--- TODO Define values here
+	private minPerformers = 1;
 instance variables
-	-- Variables declared public to facilitate queries
-	public static shows : Shows := {};
+	private static shows : MyShows := {};
 operations
 	public static AddShow : Show ==> ()
 	AddShow(s) == shows := shows union {s}
-	pre shows inter {s} = {}
-	post shows inter {s} = {s};
+	pre s not in set shows
+	post s in set shows and shows~ = shows \ {s};
 
 	public static RemoveShow : Show ==> ()
 	RemoveShow(s) == shows := shows \ {s}
-	pre shows inter {s} = {s}
-	post shows inter {s} = {};
+	pre s in set shows
+	post s not in set shows and shows~ = shows union {s};
+	
+	-- Get shows ordered by start date
+	public static GetShowsSortedByStartDate : () ==> Shows
+	GetShowsSortedByStartDate() == (
+		dcl newShows : Shows := [];
+		for all s in set shows do
+			newShows := newShows ^ [s];
+		
+		for all i in set inds newShows do
+			for all j in set inds newShows do
+				if(Common`isBeforeOrEqual(newShows(j).startDate,newShows(i).startDate)) then (
+					dcl t : Show := newShows(i);
+					newShows(i) := newShows(j);
+					newShows(j) := t;
+				);
+		return newShows;
+	)
+	post forall i, j in set inds RESULT & i < j => Common`isBeforeOrEqual(RESULT(i).startDate, RESULT(j).startDate);
+
 functions
 	public static CreateShow : Common`String1 * Performers * Common`Date * Common`Date * Place * Common`String +> Show
-	CreateShow(n,ps,sd,ed,pl,desc) == mk_Show(n,ps,sd,ed,pl,desc);
-	--pre
-	--post
+	CreateShow(n,ps,sd,ed,pl,desc) == mk_Show(n,ps,sd,ed,pl,desc)
+	pre card ps >= minPerformers and Common`isBeforeOrEqual(sd,ed)
+	post RESULT.name = n and RESULT.performers = ps and RESULT.startDate = sd
+		and RESULT.endDate = ed and RESULT.place = pl and RESULT.description = desc;
 traces
--- TODO Define Combinatorial Test Traces here
 end Calendar

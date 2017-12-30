@@ -1,6 +1,7 @@
 class Conversation
 types
-	public static Users = set1 of User;
+	public static Users = set1 of User
+		inv u == card u >= minMembers;
 	public static Message ::
 		date : Common`Date
 		text : Common`String1
@@ -9,7 +10,6 @@ types
 values
 	private static minMembers = 2;
 instance variables
-	-- Variables declared public to facilitate queries
 	public members : Users;
 	public topic : Common`String1;
 	public messages : Messages := { |-> };
@@ -21,32 +21,33 @@ operations
 		for all user in set members do
 			user.AddConversation(self);
 	)
-	pre card users >= minMembers
-	post members = users and topic = t and forall user in set members & user.conversations inter {self} = {self};
+	pre card users >= minMembers -- invariant verification
+	post members = users -- invariant verification by verifying that the assignment is correct (already passed precondition)
+		and topic = t
+		and forall user in set members & self in set user.conversations;
 
 	public AddMember : User ==> ()
 	AddMember(u) == (
-		if (members inter {u} = {}) then (
+		if (u not in set members) then (
 			members := members union {u};
 			u.AddConversation(self);
 		);
 	)
-	--pre members inter {u} = {}
-	post members inter {u} = {u};
-	
+	post u in set members and (members~ = members or members~ = members \ {u}) and self in set u.conversations;
+
 	public RemoveMember : User ==> ()
 	RemoveMember(u) == (
-		if (members inter {u} = {u} and card members > minMembers) then (
+		if (u in set members) then (
+			if card members <= minMembers then error;
 			members := members \ {u};
 			u.RemoveConversation(self);
 		);
 	)
-	pre card members >= minMembers
-	post members inter {u} = {} and card members >= minMembers and u.conversations inter {self} = {};
+	pre card members > minMembers
+	post card members >= minMembers and u not in set members and members~ = members union {u} and self not in set u.conversations;
 
 	public SetTopic : Common`String1 ==> ()
 	SetTopic(t) == topic := t
-	--pre
 	post topic = t;
 
 	public AddMessage : Common`Date * Common`String1 * User ==> ()
@@ -56,9 +57,7 @@ operations
 		messages := messages munion myMap;
 	)
 	pre s in set members
-	--post
+	post card dom messages = card dom messages~ + 1;
 functions
--- TODO Define functiones here
 traces
--- TODO Define Combinatorial Test Traces here
 end Conversation

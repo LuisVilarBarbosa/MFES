@@ -4,17 +4,16 @@ types
 		;--inv e == isEmail(e);
 	public static Password = Common`String1
 		inv p == len p >= minLength;
-	public static PublicUsers = set of PublicUser;
 	public static Places = set of Place;
 	public static Shows = set of Calendar`Show;
 	private static PrivateUsers = set of PrivateUser;
 values
 	private minLength = 8;
 instance variables
-	-- Variables declared public to facilitate queries
 	public email : Email;
 	public password : Password;
-	public myPublicUsers : PublicUsers;
+	public myArtists : Artist`Artists;
+	public myBands : Band`Bands;
 	public myPlaces : Places;
 	public myShows : Shows;
 	private static privateUsers : PrivateUsers := {};
@@ -23,31 +22,33 @@ operations
 	PrivateUser(n,e,pass) == (
 		email := e;
 		password := pass;
-		myPublicUsers := {};
+		myArtists := {};
+		myBands := {};
 		myPlaces := {};
 		myShows := {};
 		privateUsers := privateUsers union {self};
 		User(n);
 	)
-	pre forall u in set privateUsers & u.email <> e
-	post privateUsers inter {self} = {self};
+	pre /*isEmail(e) and*/ forall u in set privateUsers & u.email <> e	-- invariant verification on 'e'
+	post email = e and password = pass and myArtists = {} and myBands = {} and myPlaces = {}  -- invariant verification on 'e' by verifying that the assignment is correct (already passed precondition)
+		and myShows = {} and self in set privateUsers;
 
 	public SetPassword : Password ==> ()
 	SetPassword(p) == password := p
-	pre len p >= minLength
-	post password = p;
+	pre len p >= minLength -- invariant verification
+	post password = p; -- invariant verification by verifying that the assignment is correct (already passed precondition)
 
 	public CreateArtist : Common`String1 * Common`Address ==> ()
-	CreateArtist(n,addr) == myPublicUsers := myPublicUsers union {new Artist(n,addr)}
-	;--pre myPublicUsers inter {publicUser} = {};
+	CreateArtist(n,addr) == myArtists := myArtists union {new Artist(n,addr)}
+	post exists1 a in set myArtists & a.name = n and a.location = addr;
 
 	public CreateBand : Common`String1 * Common`Address * Band`Members ==> ()
-	CreateBand(n,addr,members) == myPublicUsers := myPublicUsers union {new Band(n,addr,members)}
-	;--pre myPublicUsers inter {publicUser} = {};
+	CreateBand(n,addr,members) == myBands := myBands union {new Band(n,addr,members)}
+	post exists1 b in set myBands & b.name = n and b.location = addr and b.members = members;
 
 	public CreatePlace : Common`String1 * Common`String * Common`Address ==> ()
 	CreatePlace(n,d,l) == myPlaces := myPlaces union {new Place(n,d,l)}
-	;--pre myPlaces inter {p} = {}
+	post exists1 p in set myPlaces & p.name = n and p.description = d and p.location = l;
 
 	public RemovePlace : Place ==> ()
 	RemovePlace(p) == (
@@ -63,8 +64,7 @@ operations
 		myShows := myShows union {s};
 		Calendar`AddShow(s);
 	)
-	;--pre myShows inter {s} = {}
-	--post myShows inter {s} = {s};
+	post exists1 s in set myShows & s.name = n and s.performers = ps and s.startDate = sd and s.endDate = ed and s.place = pl and s.description = desc;
 
 	public RemoveShow : Calendar`Show ==> ()
 	RemoveShow(s) == (
@@ -74,7 +74,7 @@ operations
 	pre s in set myShows
 	post s not in set myShows and myShows~ = myShows union {s};
 functions
--- TODO Define functiones here
+	private static isEmail : Email +> bool
+	isEmail(email) == exists1 at in seq email & at = '@';
 traces
--- TODO Define Combinatorial Test Traces here
 end PrivateUser

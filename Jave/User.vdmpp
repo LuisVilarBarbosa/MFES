@@ -3,7 +3,6 @@ types
 	public static Conversations = set of Conversation;
 values
 instance variables
-	-- Variables declared public to facilitate queries
 	public name : Common`String1;
 	public conversations : Conversations;
 operations
@@ -12,35 +11,29 @@ operations
 		name := n;
 		conversations := {};
 	)
-	--pre
 	post name = n and conversations = {};
 
 	public SetName : Common`String1 ==> ()
 	SetName(n) == name := n
-	--pre 
 	post name = n;
 
 	public AddConversation : Conversation ==> ()
 	AddConversation(c) == (
-		if (conversations inter {c} = {}) then (
+		if (c not in set conversations) then (
 			conversations := conversations union {c};
 			c.AddMember(self);
 		);
 	)
-	--pre conversations inter {c} = {}
-	post conversations inter {c} = {c};
+	post c in set conversations and conversations~ = conversations \ {c} and self in set c.members;
 
 	public RemoveConversation : Conversation ==> ()
 	RemoveConversation(c) == (
-		if (conversations inter {c} = {c}) then (
+		if (c in set conversations) then (
 			conversations := conversations \ {c};
 			c.RemoveMember(self);
 		);
 	)
-	--pre conversations inter {c} = {c} and c.members inter {self} = {self}
-	post conversations inter {c} = {} and c.members inter {self} = {};
+	post c not in set conversations and conversations~ = conversations union {c} and self not in set c.members;
 functions
--- TODO Define functiones here
 traces
--- TODO Define Combinatorial Test Traces here
 end User

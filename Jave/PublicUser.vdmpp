@@ -10,9 +10,7 @@ types
 	public static Musics = set of Music;
 	public static PublicUsers = set of PublicUser;
 values
--- TODO Define values here
 instance variables
-	-- Variables declared public to facilitate queries
 	public musics : Musics;
 	public location : Common`Address;
 	public genres : Genres;
@@ -28,9 +26,8 @@ operations
 		instruments := {};
 		description := "";
 		User(stgName);
-	);
-	--pre
-	--post
+	)
+	post musics = {} and location = loc and genres = {} and instruments = {} and description = "";
 
 	public AddMusic : Common`String1 * Common`String1 ==> ()
 	AddMusic(n,l) == (
@@ -38,55 +35,57 @@ operations
 		musics := musics union {m};
 		allMusics := allMusics union {m};
 	)
-	pre forall music in set allMusics & music.link <> l;
+	pre forall m1 in set musics & m1.link <> l	-- double check
+		and forall m2 in set allMusics & m2.link <> l
+	post exists1 m1 in set musics & m1.name = n and m1.link = l	-- double check
+		and exists1 m2 in set allMusics & m2.name = n and m2.link = l;
 	
 	public RemoveMusic : Music ==> ()
-	RemoveMusic(m) == musics := musics \ {m}
-	pre musics inter {m} = {m}
-	post musics inter {m} = {};
+	RemoveMusic(m) == (
+		musics := musics \ {m};
+		allMusics := allMusics \ {m};
+	)
+	pre m in set musics and m in set allMusics
+	post m not in set musics and musics~ = musics union {m}
+		and m not in set allMusics and allMusics~ = allMusics union {m};
 	
 	public SetLocation : Common`Address ==> ()
 	SetLocation(l) == location := l
-	--pre 
 	post location = l;
 
 	public AddGenre : Genre ==> ()
 	AddGenre(g) == genres := genres union {g}
-	pre genres inter {g} = {}
-	post genres inter {g} = {g};
+	pre g not in set genres
+	post g in set genres and genres~ = genres \ {g};
 	
 	public RemoveGenre : Genre ==> ()
 	RemoveGenre(g) == genres := genres \ {g}
-	pre genres inter {g} = {g}
-	post genres inter {g} = {};
+	pre g in set genres
+	post g not in set genres and genres~ = genres union {g};
 
 	public AddInstrument : Instrument ==> ()
 	AddInstrument(i) == instruments := instruments union {i}
-	pre instruments inter {i} = {}
-	post instruments inter {i} = {i};
+	pre i not in set instruments
+	post i in set instruments and instruments~ = instruments \ {i};
 	
 	public RemoveInstrument : Instrument ==> ()
 	RemoveInstrument(i) == instruments := instruments \ {i}
-	pre instruments inter {i} = {i}
-	post instruments inter {i} = {};
+	pre i in set instruments
+	post i not in set instruments and instruments~ = instruments union {i};
 
 	public SetDescription : Common`String ==> ()
 	SetDescription(d) == description := d
-	--pre 
 	post description = d;
 
-	public GetPublicUsers : Common`String * PublicUsers ==> PublicUsers
+	public GetPublicUsers : Common`String1 * PublicUsers ==> PublicUsers
 	GetPublicUsers(searchStr,array) == (
 		dcl results : PublicUsers := {};
 		for all u in set array do
 			if(Common`ContainsStr2(u.name,searchStr)) then
 					results := results union {u};
 		return results;
-	);
-	--pre
-	--post;
+	)
+	post RESULT subset array;
 functions
--- TODO Define functiones here
 traces
--- TODO Define Combinatorial Test Traces here
 end PublicUser

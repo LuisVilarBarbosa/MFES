@@ -85,12 +85,12 @@ operations
 		dcl date : Common`Date := Common`CreateDate(2017,12,30);
 		privateUser1.CreatePlace("FEUP","",address);
 		let place in set privateUser1.myPlaces in (
-			privateUser1.CreateShow("MFES show",privateUser1.myPublicUsers,date,date,place,"");
+			privateUser1.CreateShow("MFES show",privateUser1.myArtists,date,date,place,"");
 			--this line should make the test fail: end date before start date
 			--privateUser1.CreateShow("MFES show",{artist1,artist2},date,date2,place,"");	-- TODO
 		);
 	)
-	pre card privateUser1.myPublicUsers = 3;	-- this is the expected length, but it can have 1 or more elements
+	pre card privateUser1.myArtists = 2;	-- this is the expected length, but it can have 1 or more elements
 
 	private testRemoveShow : () ==> ()
 	testRemoveShow() == (

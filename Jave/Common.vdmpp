@@ -39,14 +39,18 @@ functions
 		else 31 - (m - 1) mod 7 mod 2
 	)
 	pre m <= 12
-	post RESULT <= 31;
+	post if m = 2 then RESULT in set {28,29} else RESULT in set {30,31};
 
 	public static CreateAddress : String * String * String1 * String +> Address
-	CreateAddress(stt,num,c,zip) == mk_Address(stt,num,c,zip);
+	CreateAddress(stt,num,c,zip) == mk_Address(stt,num,c,zip)
+	post RESULT.street = stt and RESULT.number = num and RESULT.city = c and RESULT.zipcode = zip;
 
 	public static CreateDate : nat1 * nat1 * nat1 +> Date
 	CreateDate(y,m,d) == mk_Date(y,m,d)
 	pre m >= 1 and m <= 12 and d >=1 and d <= DaysOfMonth(y,m) -- invariant verification
 	post RESULT.year = y and RESULT.month = m and RESULT.day = d; -- invariant verification by verifying that the assignment is correct (already passed precondition)
+
+	public static isBeforeOrEqual : Date * Date +> bool
+	isBeforeOrEqual(d1,d2) == d2.year > d1.year or (d2.year = d1.year and (d2.month > d1.month or d2.month = d1.month and d2.day >= d1.day));
 traces
 end Common
