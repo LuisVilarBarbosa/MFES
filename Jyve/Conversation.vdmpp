@@ -1,14 +1,13 @@
 class Conversation
 types
-	public static Users = set1 of User
-		inv u == card u >= minMembers;
+	public static Users = set of User;
 	public static Message ::
 		date : Common`Date
 		text : Common`String1
 		sender : User;
 	public static Messages = inmap nat1 to Message;
 values
-	private static minMembers = 2;
+	private static minMembers = 1;
 instance variables
 	public members : Users;
 	public topic : Common`String1;
@@ -21,8 +20,8 @@ operations
 		for all user in set members do
 			user.AddConversation(self);
 	)
-	pre card users >= minMembers -- invariant verification
-	post members = users -- invariant verification by verifying that the assignment is correct (already passed precondition)
+	pre card users >= minMembers
+	post members = users
 		and topic = t
 		and forall user in set members & self in set user.conversations;
 
@@ -35,16 +34,15 @@ operations
 	)
 	post u in set members and (members~ = members or members~ = members \ {u}) and self in set u.conversations;
 
+	-- If 'members' becomes empty, the conversation is expected to be lost and automatically destroyed by JVM
 	public RemoveMember : User ==> ()
 	RemoveMember(u) == (
 		if (u in set members) then (
-			if card members <= minMembers then error;
-			members := members \ {u};
+				members := members \ {u};
 			u.RemoveConversation(self);
 		);
 	)
-	pre card members > minMembers
-	post card members >= minMembers and u not in set members and members~ = members union {u} and self not in set u.conversations;
+	post u not in set members and members~ = members union {u} and self not in set u.conversations;
 
 	public SetTopic : Common`String1 ==> ()
 	SetTopic(t) == topic := t
