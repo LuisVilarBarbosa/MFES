@@ -26,7 +26,7 @@ values
 	private static specialArtistName1 = "SpecialArtist1";
 	private static specialArtistName2 = "SpecialArtist2";
 	private static specialArtistName3 = "SpecialArtist3";
-	private static specialArtistSubstring = "SpecialArtist";
+	private static specialArtistSubstring = "ecialArtist";
 instance variables
 	private privateUser1 : PrivateUser;
 	private privateUser2 : PrivateUser;
