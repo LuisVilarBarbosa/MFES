@@ -17,13 +17,8 @@ operations
 	
 	public AddBand : Band ==> ()
 	AddBand(b) == memberOf := memberOf union {b}
-	pre b not in set memberOf
-	post b in set memberOf and memberOf~ = memberOf \ {b};
-	
-	public RemoveBand : Band ==> ()
-	RemoveBand(b) == memberOf := memberOf \ {b}
-	pre b in set memberOf
-	post b not in set memberOf and memberOf~ = memberOf union {b};
+	pre b not in set memberOf and self in set b.members
+	post b in set memberOf and memberOf~ = memberOf \ {b} and self in set b.members;
 functions
 traces
 end Artist

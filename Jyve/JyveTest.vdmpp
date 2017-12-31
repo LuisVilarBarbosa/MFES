@@ -72,10 +72,6 @@ operations
 		jyveTest.testAddMessageToConversation();
 		IO`println("Success");
 
-		IO`print("testAddRemoveArtistBand: ");
-		--jyveTest.testAddRemoveArtistBand();
-		IO`println("Success");
-
 		IO`print("testAddRemoveBandMember: ");
 		jyveTest.testAddRemoveBandMember();
 		IO`println("Success");
@@ -262,26 +258,6 @@ operations
 	post card privateUser1.conversations = 0;
 
 	/* Tests to methods of PublicUser */
-
-
-	/* Tests to methods of Artist */
-	/*private testAddRemoveArtistBand : () ==> ()
-	testAddRemoveArtistBand() == (
-		privateUser1.CreateArtist(,address);
-		privateUser1.CreateArtist(,address);
-		privateUser1.CreateArtist(,address);
-		let a1,a2,a3 in set privateUser1.myArtists be st (a1 <> a2 and a1 <> a3 and a2 <> a3) in (
-			privateUser1.CreateBand(bandName3,address,{a1,a2});
-			let b in set privateUser1.myBands in (
-				privateUser1.RemoveBand(
-				assertTrue(true);
-				b.AddMember(a3);
-				b.RemoveMember(a3);
-				this line should make the test fail: non-existant member
-				b.RemoveMember(a3);
-			);
-		);
-	);*/
 
 
 	/* Tests to methods of Band */

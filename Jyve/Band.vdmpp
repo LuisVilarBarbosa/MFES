@@ -21,16 +21,6 @@ operations
 	post members = m	-- invariant verification by verifying that the assignment is correct (already passed precondition)
 		and forall member in set members & self in set member.memberOf
 		and self in set bands;
-
-	public AddMember : Artist ==> ()
-	AddMember(a) == members := members union {a}
-	pre a not in set members
-	post a in set members and members~ = members \ {a};
-	
-	public RemoveMember : Artist ==> ()
-	RemoveMember(a) == members := members \ {a}
-	pre a in set members and card members > minMembers
-	post a not in set members and members~ = members union {a};
 functions
 traces
 end Band
