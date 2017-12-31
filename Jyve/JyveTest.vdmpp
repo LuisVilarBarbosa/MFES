@@ -293,16 +293,20 @@ operations
 	private testAddRemovePublicUserMusic : () ==> ()
 	testAddRemovePublicUserMusic() == (
 		let artist in set privateUser1.myArtists in (
-			dcl name : Common`String1 := "Music";
-			dcl link : Common`String1 := "https://www.youtube.com/watch?v=2tqQcIBhSOE";
-			artist.AddMusic(name,link);
-			let m in set artist.musics in (
-				assertTrue(m.name = name and m.link = link);
+			dcl name1 : Common`String1 := "Music1";
+			dcl link1 : Common`String1 := "https://www.youtube.com/watch?v=2tqQcIBhSOE";
+			dcl name2 : Common`String1 := "Music2";
+			dcl link2 : Common`String1 := "https://www.youtube.com/watch?v=Kq-DsCRVma0";
+			artist.AddMusic(name1,link1);
+			let m1 in set artist.musics in (
+				assertTrue(m1.name = name1 and m1.link = link1);
+				artist.AddMusic(name2,link2);	-- will test if 'link2' has never been used (precondition)
 				--this line should make the test fail: link already used for other music
-				--artist.AddMusic(name,link);
-				artist.RemoveMusic(m);
+				--artist.AddMusic(name1,link1);
+				artist.RemoveMusic(m1);
 				--this line should make the test fail: non-existent music
-				--artist.RemoveMusic(m);
+				--artist.RemoveMusic(m1);
+				let m2 in set artist.musics be st (m2.name = name2 and m2.link = link2) in artist.RemoveMusic(m2);
 			);
 		);
 	)
