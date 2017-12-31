@@ -11,7 +11,9 @@ types
 		year : nat1
 		month : nat1
 		day : nat1
-		inv d == d.month  <= 12 and d.day <= DaysOfMonth(d.year, d.month);
+		hour : nat
+		minute : nat
+		inv d == d.month  <= 12 and d.day <= DaysOfMonth(d.year, d.month) and d.hour < 24 and d.minute < 60;
 values
 instance variables
 operations
@@ -45,10 +47,10 @@ functions
 	CreateAddress(stt,num,c,zip) == mk_Address(stt,num,c,zip)
 	post RESULT.street = stt and RESULT.number = num and RESULT.city = c and RESULT.zipcode = zip;
 
-	public static CreateDate : nat1 * nat1 * nat1 +> Date
-	CreateDate(y,m,d) == mk_Date(y,m,d)
-	pre m >= 1 and m <= 12 and d >=1 and d <= DaysOfMonth(y,m) -- invariant verification
-	post RESULT.year = y and RESULT.month = m and RESULT.day = d; -- invariant verification by verifying that the assignment is correct (already passed precondition)
+	public static CreateDate : nat1 * nat1 * nat1 * nat * nat +> Date
+	CreateDate(y,m,d,h,min) == mk_Date(y,m,d,h,min)
+	pre m >= 1 and m <= 12 and d >=1 and d <= DaysOfMonth(y,m) and h >= 0 and h < 24 and min >= 0 and min < 60 -- invariant verification
+	post RESULT.year = y and RESULT.month = m and RESULT.day = d and RESULT.hour = h and RESULT.minute = min; -- invariant verification by verifying that the assignment is correct (already passed precondition)
 
 	public static isBeforeOrEqual : Date * Date +> bool
 	isBeforeOrEqual(d1,d2) == d2.year > d1.year or (d2.year = d1.year and (d2.month > d1.month or d2.month = d1.month and d2.day >= d1.day));

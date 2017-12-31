@@ -25,20 +25,24 @@ operations
 	pre s in set shows
 	post s not in set shows and shows~ = shows union {s};
 	
-	-- Get shows ordered by start date
+	-- Get shows ordered by start date (based on selection sort: https://www.geeksforgeeks.org/selection-sort/)
 	public static GetShowsSortedByStartDate : () ==> Shows
 	GetShowsSortedByStartDate() == (
 		dcl newShows : Shows := [];
 		for all s in set shows do
 			newShows := newShows ^ [s];
-		
-		for all i in set inds newShows do
-			for all j in set inds newShows do
-				if(Common`isBeforeOrEqual(newShows(j).startDate,newShows(i).startDate)) then (
-					dcl t : Show := newShows(i);
-					newShows(i) := newShows(j);
-					newShows(j) := t;
-				);
+
+		for i=1 to len newShows - 1 do (
+			dcl minIdx : nat1 := i;
+			dcl t : Show := newShows(i);
+
+			for j=i+1 to len newShows do
+				if(Common`isBeforeOrEqual(newShows(j).startDate,newShows(minIdx).startDate)) then
+					minIdx := j;
+
+			newShows(i) := newShows(minIdx);
+			newShows(minIdx) := t;
+		);
 		return newShows;
 	)
 	post forall i, j in set inds RESULT & i < j => Common`isBeforeOrEqual(RESULT(i).startDate, RESULT(j).startDate);

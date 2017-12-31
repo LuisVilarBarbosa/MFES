@@ -109,8 +109,14 @@ operations
 		IO`println("Success");
 
 		IO`print("testGetShowsSortedByStartDate: ");
-		--jyveTest.testGetShowsSortedByStartDate();
+		jyveTest.testGetShowsSortedByStartDate();
 		IO`println("Success");
+		
+		IO`print("testCreateDate: ");
+		jyveTest.testCreateDate();
+		IO`println("Success");
+		
+		IO`println("All tests completed with success");
 	);
 
 
@@ -180,8 +186,8 @@ operations
 
 	private testCreateRemoveShow : () ==> ()
 	testCreateRemoveShow() == (
-		dcl date1 : Common`Date := Common`CreateDate(2016,2,29);
-		dcl date2 : Common`Date := Common`CreateDate(2017,12,30);
+		dcl date1 : Common`Date := Common`CreateDate(2016,2,29,0,0);
+		dcl date2 : Common`Date := Common`CreateDate(2017,12,30,0,0);
 		privateUser1.CreatePlace("FEUP","",address1);
 		let place in set privateUser1.myPlaces in (
 			privateUser1.CreateShow("MFES show1",privateUser1.myArtists,date2,date2,place,"");
@@ -271,7 +277,7 @@ operations
 
 	private testAddMessageToConversation : () ==> ()
 	testAddMessageToConversation() == (
-		dcl date : Common`Date := Common`CreateDate(2017,12,30);
+		dcl date : Common`Date := Common`CreateDate(2017,12,30,0,0);
 		dcl text : Common`String1 := "Text";
 		dcl c1 : Conversation := new Conversation("Topic",{privateUser1});
 		c1.AddMessage(date,text,privateUser1);
@@ -411,20 +417,22 @@ operations
 
 	private testGetShowsSortedByStartDateAux1 : () ==> ()
 	testGetShowsSortedByStartDateAux1() == (
-		dcl date1 : Common`Date := Common`CreateDate(2016,2,29);
-		dcl date2 : Common`Date := Common`CreateDate(2017,12,30);
+		dcl date1 : Common`Date := Common`CreateDate(2016,2,29,0,0);
+		dcl date2 : Common`Date := Common`CreateDate(2017,12,30,0,0);
+		dcl date3 : Common`Date := Common`CreateDate(2017,12,31,0,0);
 		privateUser1.CreatePlace("FEUP","",address1);
 		let place in set privateUser1.myPlaces in (
-			privateUser1.CreateShow("Show1",privateUser1.myArtists,date1,date2,place,"");
-			privateUser1.CreateShow("Show2",privateUser1.myBands,date2,date2,place,"");
+			privateUser1.CreateShow("Show1",privateUser1.myBands,date3,date3,place,"");
+			privateUser1.CreateShow("Show2",privateUser1.myArtists,date2,date2,place,"");
+			privateUser1.CreateShow("Show3",privateUser1.myBands,date1,date2,place,"");
 		);
 	);
 
 	private testGetShowsSortedByStartDateAux2 : () ==> ()
 	testGetShowsSortedByStartDateAux2() == (
 		dcl shows : Calendar`Shows := Calendar`GetShowsSortedByStartDate();
-		for i=0 to len shows - 1 do
-			for j=i+1 to len shows - 1 do
+		for i=1 to len shows do
+			for j=i+1 to len shows do
 				assertTrue(Common`isBeforeOrEqual(shows(i).startDate, shows(j).startDate));
 
 		while(card privateUser1.myPlaces > 0) do
@@ -434,6 +442,28 @@ operations
 			let show in set privateUser1.myShows in privateUser1.RemoveShow(show);
 	)
 	post card privateUser1.myPlaces = 0 and card privateUser1.myShows = 0;
+
+
+	/* Tests to methods of Common */
+	private testCreateDate : () ==> ()
+	testCreateDate() == (
+		dcl dates : set of Common`Date := {};
+		dates := dates union {Common`CreateDate(2016,2,29,0,0)};
+		dates := dates union {Common`CreateDate(2017,2,28,23,0)};
+		dates := dates union {Common`CreateDate(2016,11,30,23,0)};
+		dates := dates union {Common`CreateDate(2016,12,31,23,59)};
+		--this line should make the test fail: not leap year
+		--dates := dates union {Common`CreateDate(2017,2,29,23,0)};
+		--this line should make the test fail: month 11 does not have 31 days
+		--dates := dates union {Common`CreateDate(2016,11,31,23,0)};
+		--this line should make the test fail: there is no month with 32 days
+		--dates := dates union {Common`CreateDate(2016,12,32,23,0)};
+		--this line should make the test fail: hour 24 does not exist
+		--dates := dates union {Common`CreateDate(2016,11,30,24,0)};
+		--this line should make the test fail: minute 60 does not exist
+		--dates := dates union {Common`CreateDate(2016,11,30,23,60)};
+		assertEqual(dates,dates);
+	);
 
 functions
 traces
