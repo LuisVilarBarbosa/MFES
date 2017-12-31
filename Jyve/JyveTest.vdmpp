@@ -177,9 +177,6 @@ operations
 			--this line should make the test fail: non-existent place
 			--privateUser1.RemovePlace(p);
 		);
-
-		while(card privateUser1.myPlaces > 0) do
-			let p in set privateUser1.myPlaces in privateUser1.RemovePlace(p);
 	)
 	pre card privateUser1.myPlaces = 0
 	post card privateUser1.myPlaces = 0;
@@ -202,12 +199,7 @@ operations
 			--this line should make the test fail: non-existent show
 			--privateUser1.RemoveShow(show);
 		);
-
-		while(card privateUser1.myPlaces > 0) do
-			let place in set privateUser1.myPlaces in privateUser1.RemovePlace(place);
-
-		while(card privateUser1.myShows > 0) do
-			let show in set privateUser1.myShows in privateUser1.RemoveShow(show);
+		let show in set privateUser1.myShows in privateUser1.RemoveShow(show);
 	)
 	pre card privateUser1.myArtists = 3	-- this is the expected length, but it can have 1 or more elements
 		and card privateUser1.myBands = 1
@@ -237,9 +229,6 @@ operations
 		);
 
 		let c in set privateUser1.conversations in privateUser1.RemoveConversation(c);
-
-		while(card privateUser1.conversations > 0) do
-			let c in set privateUser1.conversations in privateUser1.RemoveConversation(c);
 	)
 	pre card privateUser1.conversations = 0
 	post card privateUser1.conversations = 0;
@@ -251,12 +240,8 @@ operations
 		dcl c1 : Conversation := new Conversation(topic1,{privateUser1});
 		c1.AddMember(privateUser2);
 		assertEqual(c1.members,{privateUser1,privateUser2});
-		
-		while(card privateUser1.conversations > 0) do
-			let c2 in set privateUser1.conversations in privateUser1.RemoveConversation(c2);
-		
-		while(card privateUser2.conversations > 0) do
-			let c2 in set privateUser2.conversations in privateUser2.RemoveConversation(c2);
+		let c in set privateUser1.conversations in privateUser1.RemoveConversation(c);
+		let c in set privateUser2.conversations in privateUser2.RemoveConversation(c);
 	)
 	pre card privateUser1.conversations = 0 and card privateUser2.conversations = 0
 	post card privateUser1.conversations = 0 and card privateUser2.conversations = 0;
@@ -268,9 +253,7 @@ operations
 		dcl c1 : Conversation := new Conversation(topic1,{privateUser1});
 		c1.SetTopic(topic2);
 		assertEqual(topic2,c1.topic);
-		
-		while(card privateUser1.conversations > 0) do
-			let c2 in set privateUser1.conversations in privateUser1.RemoveConversation(c2);
+		let c in set privateUser1.conversations in privateUser1.RemoveConversation(c);
 	)
 	pre card privateUser1.conversations = 0
 	post card privateUser1.conversations = 0;
@@ -282,9 +265,7 @@ operations
 		dcl c1 : Conversation := new Conversation("Topic",{privateUser1});
 		c1.AddMessage(date,text,privateUser1);
 		let m1 in set rng c1.messages in assertTrue(m1.date = date and m1.text = text and m1.sender = privateUser1);
-		
-		while(card privateUser1.conversations > 0) do
-			let c2 in set privateUser1.conversations in privateUser1.RemoveConversation(c2);
+		let c in set privateUser1.conversations in privateUser1.RemoveConversation(c);
 	)
 	pre card privateUser1.conversations = 0
 	post card privateUser1.conversations = 0;
@@ -391,8 +372,7 @@ operations
 			place.SetName("FEUP2");
 			assertTrue(place.name <> oldName);
 		);
-		while(card privateUser1.myPlaces > 0) do
-			let place in set privateUser1.myPlaces in privateUser1.RemovePlace(place);
+		let place in set privateUser1.myPlaces in privateUser1.RemovePlace(place);
 	)
 	pre card privateUser1.myPlaces = 0
 	post card privateUser1.myPlaces = 0;
@@ -405,8 +385,7 @@ operations
 			place.SetDescription("New description");
 			assertTrue(place.description <> oldDescription);
 		);
-		while(card privateUser1.myPlaces > 0) do
-			let place in set privateUser1.myPlaces in privateUser1.RemovePlace(place);
+		let place in set privateUser1.myPlaces in privateUser1.RemovePlace(place);
 	)
 	pre card privateUser1.myPlaces = 0
 	post card privateUser1.myPlaces = 0;
