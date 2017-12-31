@@ -17,10 +17,10 @@ instance variables
 operations
 	public static ContainsStr2 : String1 * String1 ==> bool
 	ContainsStr2(str1,str2) == (
-		for i = 0 to len str1 - len str2 do (
+		for i = 1 to len str1 - len str2 do (
 			dcl res : bool := true;
-			for j = 0 to len str2 - 1 do (
-				if (str1(i+j) <> str2(j)) then
+			for j = 1 to len str2 do (
+				if (str1(i+j-1) <> str2(j)) then
 					res := false;
 			);
 			if(res) then

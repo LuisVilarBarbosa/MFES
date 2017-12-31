@@ -18,13 +18,6 @@ values
 	private static artistName1 = "artist1";
 	private static artistName2 = "artist2";
 	private static artistName3 = "artist3";
-	private static artistName4 = "artist4";
-	private static artistName5 = "artist5";
-	private static artistName6 = "artist6";
-	private static artistName7 = "artist7";
-	private static artistName8 = "artist8";
-	private static artistName9 = "artist9";
-	private static artistName10 = "artist10";
 	private static bandName1 = "band1";
 	private static bandName2 = "band2";
 	private static bandName3 = "band3";
@@ -104,7 +97,7 @@ operations
 		IO`println("Success");
 
 		IO`print("testGetPublicUsers: ");
-		--jyveTest.testGetPublicUsers();
+		jyveTest.testGetPublicUsers();
 		IO`println("Success");
 
 		IO`print("testSetPlaceName: ");
@@ -137,11 +130,13 @@ operations
 	/* Tests to methods of PrivateUser */	
 	private testCreateArtist : () ==> ()
 	testCreateArtist() == (
+		--this three artists are used on other tests
 		privateUser1.CreateArtist(artistName1,address1);
 		privateUser1.CreateArtist(artistName2,address1);
+		privateUser1.CreateArtist(artistName3,address1);
 	)
 	pre card privateUser1.myArtists = 0
-	post card privateUser1.myArtists = 2;
+	post card privateUser1.myArtists = 3;
 
 	private testCreateBand : () ==> ()
 	testCreateBand() == (
@@ -149,7 +144,7 @@ operations
 		--this line should make the test fail: the same artist in a set that must have at least two distict artists
 		--let artist1 in set Artist`artists in privateUser1.CreateBand(bandName2,address1,{artist1,artist1});
 	)
-	pre card privateUser1.myArtists = 2	-- this is the expected length, but it can have more elements
+	pre card privateUser1.myArtists = 3	-- this is the expected length, but it can have 2 or more elements
 		and card privateUser1.myBands = 0
 	post card privateUser1.myBands = 1;
 	
@@ -208,7 +203,7 @@ operations
 		while(card privateUser1.myShows > 0) do
 			let show in set privateUser1.myShows in privateUser1.RemoveShow(show);
 	)
-	pre card privateUser1.myArtists = 2	-- this is the expected length, but it can have 1 or more elements
+	pre card privateUser1.myArtists = 3	-- this is the expected length, but it can have 1 or more elements
 		and card privateUser1.myBands = 1
 		and card privateUser1.myPlaces = 0
 		and card privateUser1.myShows = 0
@@ -291,8 +286,7 @@ operations
 	/* Tests to methods of PublicUser */
 	private testAddRemovePublicUserMusic : () ==> ()
 	testAddRemovePublicUserMusic() == (
-		privateUser1.CreateArtist(artistName6,address1);
-		let artist in set privateUser1.myArtists be st artist.name = artistName6 in (
+		let artist in set privateUser1.myArtists in (
 			dcl name : Common`String1 := "Music";
 			dcl link : Common`String1 := "https://www.youtube.com/watch?v=2tqQcIBhSOE";
 			artist.AddMusic(name,link);
@@ -305,22 +299,24 @@ operations
 				--artist.RemoveMusic(m);
 			);
 		);
-	);
+	)
+	pre forall artist in set privateUser1.myArtists & card artist.musics = 0
+	post forall artist in set privateUser1.myArtists & card artist.musics = 0;
 
 	private testSetPublicUserLocation : () ==> ()
 	testSetPublicUserLocation() == (
-		privateUser1.CreateArtist(artistName7,address1);
-		let artist in set privateUser1.myArtists be st artist.name = artistName7 in (
+		let artist in set privateUser1.myArtists in (
+			dcl oldAddress : Common`Address := artist.location;
+			assertTrue(oldAddress <> address2);
 			artist.SetLocation(address2);
 			assertEqual(artist.location,address2);
-			artist.SetLocation(address1);
+			artist.SetLocation(oldAddress);
 		);
 	);
 
 	private testAddRemovePublicUserGenre : () ==> ()
 	testAddRemovePublicUserGenre() == (
-		privateUser1.CreateArtist(artistName8,address1);
-		let artist in set privateUser1.myArtists be st artist.name = artistName8 in (
+		let artist in set privateUser1.myArtists in (
 			dcl testGenre : Artist`Genre := "Country";
 			artist.AddGenre(testGenre);
 			let g in set artist.genres in (
@@ -332,12 +328,13 @@ operations
 				--artist.RemoveGenre(g);
 			);
 		);
-	);
+	)
+	pre forall artist in set privateUser1.myArtists & card artist.genres = 0
+	post forall artist in set privateUser1.myArtists & card artist.genres = 0;
 
 	private testAddRemovePublicUserInstrument : () ==> ()
 	testAddRemovePublicUserInstrument() == (
-		privateUser1.CreateArtist(artistName9,address1);
-		let artist in set privateUser1.myArtists be st artist.name = artistName9 in (
+		let artist in set privateUser1.myArtists in (
 			dcl testInstrument : Artist`Genre := "Flute";
 			artist.AddInstrument(testInstrument);
 			let i in set artist.instruments in (
@@ -349,12 +346,13 @@ operations
 				--artist.RemoveInstrument(i);
 			);
 		);
-	);
+	)
+	pre forall artist in set privateUser1.myArtists & card artist.instruments = 0
+	post forall artist in set privateUser1.myArtists & card artist.instruments = 0;
 
 	private testSetPublicUserDescription : () ==> ()
 	testSetPublicUserDescription() == (
-		privateUser1.CreateArtist(artistName10,address1);
-		let artist in set privateUser1.myArtists be st artist.name = artistName10 in (
+		let artist in set privateUser1.myArtists in (
 			dcl oldDescription : Common`String := artist.description;
 			dcl newDescription : Common`String := "Test description";
 			assertTrue(oldDescription <> newDescription);
