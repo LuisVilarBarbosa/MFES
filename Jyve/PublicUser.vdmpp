@@ -77,7 +77,7 @@ operations
 	SetDescription(d) == description := d
 	post description = d;
 
-	public GetPublicUsers : Common`String1 * PublicUsers ==> PublicUsers
+	public static GetPublicUsers : Common`String1 * PublicUsers ==> PublicUsers
 	GetPublicUsers(searchStr,array) == (
 		dcl results : PublicUsers := {};
 		for all u in set array do

@@ -7,6 +7,7 @@ class JyveTest is subclass of MyTestCase
 */
 types
 values
+	-- All values in this section must be distinct.
 	private static username1 = "luis";
 	private static username2 = "luis2";
 	private static email1 = "luis@fe.up.pt";
@@ -19,10 +20,20 @@ values
 	private static artistName3 = "artist3";
 	private static artistName4 = "artist4";
 	private static artistName5 = "artist5";
+	private static artistName6 = "artist6";
+	private static artistName7 = "artist7";
+	private static artistName8 = "artist8";
+	private static artistName9 = "artist9";
+	private static artistName10 = "artist10";
 	private static bandName1 = "band1";
 	private static bandName2 = "band2";
 	private static bandName3 = "band3";
-	private static address = Common`CreateAddress("","","Porto","");
+	private static address1 = Common`CreateAddress("","","Porto","");
+	private static address2 = Common`CreateAddress("","","Viana do Castelo","");
+	private static specialArtistName1 = "SpecialArtist1";
+	private static specialArtistName2 = "SpecialArtist2";
+	private static specialArtistName3 = "SpecialArtist3";
+	private static specialArtistSubstring = "SpecialArtist";
 instance variables
 	private privateUser1 : PrivateUser;
 	private privateUser2 : PrivateUser;
@@ -72,8 +83,28 @@ operations
 		jyveTest.testAddMessageToConversation();
 		IO`println("Success");
 
-		IO`print("testAddRemoveBandMember: ");
-		jyveTest.testAddRemoveBandMember();
+		IO`print("testAddRemovePublicUserMusic: ");
+		jyveTest.testAddRemovePublicUserMusic();
+		IO`println("Success");
+
+		IO`print("testSetPublicUserLocation: ");
+		jyveTest.testSetPublicUserLocation();
+		IO`println("Success");
+
+		IO`print("testAddRemovePublicUserGenre: ");
+		jyveTest.testAddRemovePublicUserGenre();
+		IO`println("Success");
+
+		IO`print("testAddRemovePublicUserInstrument: ");
+		jyveTest.testAddRemovePublicUserInstrument();
+		IO`println("Success");
+
+		IO`print("testSetPublicUserDescription: ");
+		jyveTest.testSetPublicUserDescription();
+		IO`println("Success");
+
+		IO`print("testGetPublicUsers: ");
+		--jyveTest.testGetPublicUsers();
 		IO`println("Success");
 
 		IO`print("testSetPlaceName: ");
@@ -106,17 +137,17 @@ operations
 	/* Tests to methods of PrivateUser */	
 	private testCreateArtist : () ==> ()
 	testCreateArtist() == (
-		privateUser1.CreateArtist(artistName1,address);
-		privateUser1.CreateArtist(artistName2,address);
+		privateUser1.CreateArtist(artistName1,address1);
+		privateUser1.CreateArtist(artistName2,address1);
 	)
 	pre card privateUser1.myArtists = 0
 	post card privateUser1.myArtists = 2;
 
 	private testCreateBand : () ==> ()
 	testCreateBand() == (
-		privateUser1.CreateBand(bandName1,address,privateUser1.myArtists);
+		privateUser1.CreateBand(bandName1,address1,privateUser1.myArtists);
 		--this line should make the test fail: the same artist in a set that must have at least two distict artists
-		--let artist1 in set Artist`artists in privateUser1.CreateBand(bandName2,address,{artist1,artist1});
+		--let artist1 in set Artist`artists in privateUser1.CreateBand(bandName2,address1,{artist1,artist1});
 	)
 	pre card privateUser1.myArtists = 2	-- this is the expected length, but it can have more elements
 		and card privateUser1.myBands = 0
@@ -136,9 +167,9 @@ operations
 
 	private testCreateRemovePlace : () ==> ()
 	testCreateRemovePlace() == (
-		privateUser1.CreatePlace("FEUP","",address);
+		privateUser1.CreatePlace("FEUP","",address1);
 		--this line should make the test fail: empty name
-		--privateUser1.CreatePlace("","",address);
+		--privateUser1.CreatePlace("","",address1);
 
 		let p in set privateUser1.myPlaces in (
 			privateUser1.RemovePlace(p);
@@ -156,7 +187,7 @@ operations
 	testCreateRemoveShow() == (
 		dcl date1 : Common`Date := Common`CreateDate(2016,2,29);
 		dcl date2 : Common`Date := Common`CreateDate(2017,12,30);
-		privateUser1.CreatePlace("FEUP","",address);
+		privateUser1.CreatePlace("FEUP","",address1);
 		let place in set privateUser1.myPlaces in (
 			privateUser1.CreateShow("MFES show1",privateUser1.myArtists,date2,date2,place,"");
 			privateUser1.CreateShow("MFES show2",privateUser1.myBands,date1,date2,place,"");
@@ -258,31 +289,95 @@ operations
 	post card privateUser1.conversations = 0;
 
 	/* Tests to methods of PublicUser */
-
-
-	/* Tests to methods of Band */
-	private testAddRemoveBandMember : () ==> ()
-	testAddRemoveBandMember() == (
-		privateUser1.CreateArtist(artistName3,address);
-		privateUser1.CreateArtist(artistName4,address);
-		privateUser1.CreateArtist(artistName5,address);
-		let a1,a2,a3 in set privateUser1.myArtists be st (a1 <> a2 and a1 <> a3 and a2 <> a3) in (
-			privateUser1.CreateBand(bandName3,address,{a1,a2});
-			let b in set privateUser1.myBands in (
-				assertTrue(true);
-				--b.AddMember(a3);
-				--b.RemoveMember(a3);
-				--this line should make the test fail: non-existant member
-				--b.RemoveMember(a3);
+	private testAddRemovePublicUserMusic : () ==> ()
+	testAddRemovePublicUserMusic() == (
+		privateUser1.CreateArtist(artistName6,address1);
+		let artist in set privateUser1.myArtists be st artist.name = artistName6 in (
+			dcl name : Common`String1 := "Music";
+			dcl link : Common`String1 := "https://www.youtube.com/watch?v=2tqQcIBhSOE";
+			artist.AddMusic(name,link);
+			let m in set artist.musics in (
+				assertTrue(m.name = name and m.link = link);
+				--this line should make the test fail: link already used for other music
+				--artist.AddMusic(name,link);
+				artist.RemoveMusic(m);
+				--this line should make the test fail: non-existent music
+				--artist.RemoveMusic(m);
 			);
 		);
+	);
+
+	private testSetPublicUserLocation : () ==> ()
+	testSetPublicUserLocation() == (
+		privateUser1.CreateArtist(artistName7,address1);
+		let artist in set privateUser1.myArtists be st artist.name = artistName7 in (
+			artist.SetLocation(address2);
+			assertEqual(artist.location,address2);
+			artist.SetLocation(address1);
+		);
+	);
+
+	private testAddRemovePublicUserGenre : () ==> ()
+	testAddRemovePublicUserGenre() == (
+		privateUser1.CreateArtist(artistName8,address1);
+		let artist in set privateUser1.myArtists be st artist.name = artistName8 in (
+			dcl testGenre : Artist`Genre := "Country";
+			artist.AddGenre(testGenre);
+			let g in set artist.genres in (
+				assertEqual(g,testGenre);
+				--this line should make the test fail: genre already added
+				--artist.AddGenre(testGenre);
+				artist.RemoveGenre(g);
+				--this line should make the test fail: non-existent genre
+				--artist.RemoveGenre(g);
+			);
+		);
+	);
+
+	private testAddRemovePublicUserInstrument : () ==> ()
+	testAddRemovePublicUserInstrument() == (
+		privateUser1.CreateArtist(artistName9,address1);
+		let artist in set privateUser1.myArtists be st artist.name = artistName9 in (
+			dcl testInstrument : Artist`Genre := "Flute";
+			artist.AddInstrument(testInstrument);
+			let i in set artist.instruments in (
+				assertEqual(i,testInstrument);
+				--this line should make the test fail: link already used for other music
+				--artist.AddInstrument(testInstrument);
+				artist.RemoveInstrument(i);
+				--this line should make the test fail: non-existent music
+				--artist.RemoveInstrument(i);
+			);
+		);
+	);
+
+	private testSetPublicUserDescription : () ==> ()
+	testSetPublicUserDescription() == (
+		privateUser1.CreateArtist(artistName10,address1);
+		let artist in set privateUser1.myArtists be st artist.name = artistName10 in (
+			dcl oldDescription : Common`String := artist.description;
+			dcl newDescription : Common`String := "Test description";
+			assertTrue(oldDescription <> newDescription);
+			artist.SetDescription(newDescription);
+			assertEqual(artist.description,newDescription);
+			artist.SetDescription(oldDescription);
+		);
+	);
+
+	private testGetPublicUsers : () ==> ()
+	testGetPublicUsers() == (
+		privateUser1.CreateArtist(specialArtistName1,address1);
+		privateUser1.CreateArtist(specialArtistName2,address1);
+		privateUser1.CreateArtist(specialArtistName3,address1);
+		assertTrue(exists a1,a2,a3 in set Artist`GetPublicUsers(specialArtistSubstring,Artist`artists) & (a1 <> a2 and a1 <> a3 and a2 <> a3)
+			 and a1.name = specialArtistName1 and a2.name = specialArtistName2 and a3.name = specialArtistName3);
 	);
 
 
 	/* Tests to methods of Place */
 	private testSetPlaceName : () ==> ()
 	testSetPlaceName() == (
-		privateUser1.CreatePlace("FEUP","",address);
+		privateUser1.CreatePlace("FEUP","",address1);
 		let place in set privateUser1.myPlaces in (
 			dcl oldName : Common`String1 := place.name;
 			place.SetName("FEUP2");
@@ -296,7 +391,7 @@ operations
 
 	private testSetPlaceDescription: () ==> ()
 	testSetPlaceDescription() == (
-		privateUser1.CreatePlace("FEUP","",address);
+		privateUser1.CreatePlace("FEUP","",address1);
 		let place in set privateUser1.myPlaces in (
 			dcl oldDescription : Common`String := place.description;
 			place.SetDescription("New description");
@@ -320,7 +415,7 @@ operations
 	testGetShowsSortedByStartDateAux1() == (
 		dcl date1 : Common`Date := Common`CreateDate(2016,2,29);
 		dcl date2 : Common`Date := Common`CreateDate(2017,12,30);
-		privateUser1.CreatePlace("FEUP","",address);
+		privateUser1.CreatePlace("FEUP","",address1);
 		let place in set privateUser1.myPlaces in (
 			privateUser1.CreateShow("Show1",privateUser1.myArtists,date1,date2,place,"");
 			privateUser1.CreateShow("Show2",privateUser1.myBands,date2,date2,place,"");
