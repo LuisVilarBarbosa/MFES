@@ -85,8 +85,8 @@ operations
 		jyveTest.testAddRemovePublicUserMusic();
 		IO`println("Success");
 
-		IO`print("testSetPublicUserLocation: ");
-		jyveTest.testSetPublicUserLocation();
+		IO`print("testSetPublicUserAddress: ");
+		jyveTest.testSetPublicUserAddress();
 		IO`println("Success");
 
 		IO`print("testAddRemovePublicUserGenre: ");
@@ -309,14 +309,14 @@ operations
 	pre forall artist in set privateUser1.myArtists & card artist.musics = 0
 	post forall artist in set privateUser1.myArtists & card artist.musics = 0;
 
-	private testSetPublicUserLocation : () ==> ()
-	testSetPublicUserLocation() == (
+	private testSetPublicUserAddress : () ==> ()
+	testSetPublicUserAddress() == (
 		let artist in set privateUser1.myArtists in (
-			dcl oldAddress : Common`Address := artist.location;
+			dcl oldAddress : Common`Address := artist.address;
 			assertTrue(oldAddress <> address2);
-			artist.SetLocation(address2);
-			assertEqual(artist.location,address2);
-			artist.SetLocation(oldAddress);
+			artist.SetAddress(address2);
+			assertEqual(artist.address,address2);
+			artist.SetAddress(oldAddress);
 		);
 	);
 

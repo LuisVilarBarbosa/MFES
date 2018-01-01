@@ -40,15 +40,15 @@ operations
 
 	public CreateArtist : Common`String1 * Common`Address ==> ()
 	CreateArtist(n,addr) == myArtists := myArtists union {new Artist(n,addr)}
-	post exists1 a in set myArtists & a.name = n and a.location = addr;
+	post exists1 a in set myArtists & a.name = n and a.address = addr;
 
 	public CreateBand : Common`String1 * Common`Address * Band`Members ==> ()
 	CreateBand(n,addr,members) == myBands := myBands union {new Band(n,addr,members)}
-	post exists1 b in set myBands & b.name = n and b.location = addr and b.members = members;
+	post exists1 b in set myBands & b.name = n and b.address = addr and b.members = members;
 
 	public CreatePlace : Common`String1 * Common`String * Common`Address ==> ()
-	CreatePlace(n,d,l) == myPlaces := myPlaces union {new Place(n,d,l)}
-	post exists1 p in set myPlaces & p.name = n and p.description = d and p.location = l;
+	CreatePlace(n,desc,addr) == myPlaces := myPlaces union {new Place(n,desc,addr)}
+	post exists1 p in set myPlaces & p.name = n and p.description = desc and p.address = addr;
 
 	public RemovePlace : Place ==> ()
 	RemovePlace(p) == (

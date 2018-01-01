@@ -12,22 +12,22 @@ types
 values
 instance variables
 	public musics : Musics;
-	public location : Common`Address;
+	public address : Common`Address;
 	public genres : Genres;
 	public instruments : Instruments;
 	public description : Common`String;
 	private static allMusics : Musics := {};
 operations
 	public PublicUser : Common`String1 * Common`Address ==> PublicUser
-	PublicUser(stgName, loc) == (
+	PublicUser(stgName, addr) == (
 		musics := {};
-		location := loc;
+		address := addr;
 		genres := {};
 		instruments := {};
 		description := "";
 		User(stgName);
 	)
-	post musics = {} and location = loc and genres = {} and instruments = {} and description = "";
+	post musics = {} and address = addr and genres = {} and instruments = {} and description = "";
 
 	public AddMusic : Common`String1 * Common`String1 ==> ()
 	AddMusic(n,l) == (
@@ -49,9 +49,9 @@ operations
 	post m not in set musics and musics~ = musics union {m}
 		and m not in set allMusics and allMusics~ = allMusics union {m};
 	
-	public SetLocation : Common`Address ==> ()
-	SetLocation(l) == location := l
-	post location = l;
+	public SetAddress : Common`Address ==> ()
+	SetAddress(addr) == address := addr
+	post address = addr;
 
 	public AddGenre : Genre ==> ()
 	AddGenre(g) == genres := genres union {g}

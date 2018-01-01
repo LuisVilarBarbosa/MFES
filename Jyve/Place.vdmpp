@@ -5,21 +5,21 @@ values
 instance variables
 	public name : Common`String1;
 	public description : Common`String;
-	public location : Common`Address;
+	public address : Common`Address;
 	public positive_votes : nat;
 	public negative_votes : nat;
 	public static places : Places := {};
 operations
 	public Place : Common`String1 * Common`String * Common`Address ==> Place
-	Place(n,d,l) == (
+	Place(n,desc,addr) == (
 		name := n;
-		description := d;
-		location := l;
+		description := desc;
+		address := addr;
 		positive_votes := 0;
 		negative_votes := 0;
 		places := places union {self};
 	)
-	post name = n and description = d and location = l and positive_votes = 0
+	post name = n and description = desc and address = addr and positive_votes = 0
 		and negative_votes = 0 and places~ = places \ {self};
 
 	public SetName : Common`String1 ==> ()

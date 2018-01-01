@@ -10,12 +10,12 @@ instance variables
 	public static bands : Bands := {};
 operations
 	public Band : Common`String1 * Common`Address * Members ==> Band
-	Band(stgName,loc,m) == (
+	Band(stgName,addr,m) == (
 		members := m;
 		for all member in set members do
 			member.AddBand(self);
 		bands := bands union {self};
-		PublicUser(stgName,loc);
+		PublicUser(stgName,addr);
 	)
 	pre card m >= minMembers	-- invariant verification
 	post members = m	-- invariant verification by verifying that the assignment is correct (already passed precondition)
