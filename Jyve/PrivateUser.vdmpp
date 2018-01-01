@@ -1,7 +1,6 @@
 class PrivateUser is subclass of User
 types
-	public static Email = Common`String1
-		inv e == isEmail(e);
+	public static Email = Common`String1;
 	public static Password = Common`String1
 		inv p == len p >= minLength;
 	public static Places = set of Place;
@@ -29,8 +28,8 @@ operations
 		privateUsers := privateUsers union {self};
 		User(n);
 	)
-	pre isEmail(e) and forall u in set privateUsers & u.email <> e	-- invariant verification on 'e'
-	post email = e and password = pass and myArtists = {} and myBands = {} and myPlaces = {}  -- invariant verification on 'e' by verifying that the assignment is correct (already passed precondition)
+	pre len pass >= minLength and forall u in set privateUsers & u.email <> e	-- invariant verification on 'pass'
+	post email = e and password = pass and myArtists = {} and myBands = {} and myPlaces = {}  -- invariant verification on 'pass' by verifying that the assignment is correct (already passed precondition)
 		and myShows = {} and self in set privateUsers;
 
 	public SetPassword : Password ==> ()
@@ -81,10 +80,8 @@ operations
 				return u;
 		return nil;
 	)
-	pre isEmail(e) and len p >= minLength	 -- invariants verification
-	post RESULT = nil or (RESULT in set privateUsers and RESULT.email = e and RESULT.password = p); -- invariants verification by comparing the result with the inputs (already passed precondition)
+	pre len p >= minLength	 -- invariant verification
+	post RESULT = nil or (RESULT in set privateUsers and RESULT.email = e and RESULT.password = p); -- invariant verification by comparing the result with the input (already passed precondition)
 functions
-	private static isEmail : Common`String1 +> bool
-	isEmail(email) == exists1 at in seq email & at = '@';
 traces
 end PrivateUser
