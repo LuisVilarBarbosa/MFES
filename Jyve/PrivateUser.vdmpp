@@ -73,6 +73,16 @@ operations
 	)
 	pre s in set myShows
 	post s not in set myShows and myShows~ = myShows union {s};
+
+	public static GetPrivateUser : Email * Password ==> [PrivateUser]
+	GetPrivateUser(e,p) == (
+		for all u in set privateUsers do
+			if (u.email = e and u.password = p) then
+				return u;
+		return nil;
+	)
+	pre isEmail(e) and len p >= minLength	 -- invariants verification
+	post RESULT = nil or (RESULT in set privateUsers and RESULT.email = e and RESULT.password = p); -- invariants verification by comparing the result with the inputs (already passed precondition)
 functions
 	private static isEmail : Common`String1 +> bool
 	isEmail(email) == exists1 at in seq email & at = '@';

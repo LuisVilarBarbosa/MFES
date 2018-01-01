@@ -13,6 +13,7 @@ values
 	private static email1 = "luis@fe.up.pt";
 	private static email2 = "luis2@fe.up.pt";
 	private static email3 = "luis3@fe.up.pt";
+	private static email4 = "luis4@fe.up.pt";
 	private static password1 = "12345678";
 	private static password2 = "1234567";
 	private static artistName1 = "artist1";
@@ -54,6 +55,10 @@ operations
 
 		IO`print("testCreateRemoveShow: ");
 		jyveTest.testCreateRemoveShow();
+		IO`println("Success");
+		
+		IO`print("testGetPrivateUser: ");
+		jyveTest.testGetPrivateUser();
 		IO`println("Success");
 
 		IO`print("testSetUserName: ");
@@ -206,6 +211,16 @@ operations
 		and card privateUser1.myPlaces = 0
 		and card privateUser1.myShows = 0
 	post card privateUser1.myPlaces = 0 and card privateUser1.myShows = 0;
+
+	private testGetPrivateUser : () ==> ()
+	testGetPrivateUser() == (
+		dcl privUser1 : [PrivateUser] := PrivateUser`GetPrivateUser(email1,password1);
+		dcl privUser2 : [PrivateUser] := PrivateUser`GetPrivateUser(email2,password1);
+		dcl privUser3 : [PrivateUser] := PrivateUser`GetPrivateUser(email4,password1);
+		assertEqual(privUser1,privateUser1);
+		assertEqual(privUser2,privateUser2);
+		assertEqual(privUser3,nil);	-- non-existent private user
+	);
 
 
 	/* Tests to methods of User */
