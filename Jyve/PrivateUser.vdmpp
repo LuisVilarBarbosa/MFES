@@ -1,3 +1,4 @@
+/* Represents the private profile of a user which is able to log in. */
 class PrivateUser is subclass of User
 types
 	public static Email = Common`String1;

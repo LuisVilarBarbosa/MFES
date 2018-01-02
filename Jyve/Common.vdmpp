@@ -1,3 +1,4 @@
+/* Contains types, operations, and functions that are used in several classes. */
 class Common
 types
 	public static String = seq of char;

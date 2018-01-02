@@ -1,3 +1,4 @@
+/* Represents the public profile of an artist. */
 class Artist is subclass of PublicUser
 types
 	public static Bands = set of Band;

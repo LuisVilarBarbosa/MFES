@@ -1,3 +1,4 @@
+/* Represents a calendar with all shows. */
 class Calendar
 types
 	public static Performers = set1 of PublicUser;

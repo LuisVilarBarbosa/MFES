@@ -1,3 +1,4 @@
+/* Represents any user. */
 class User
 types
 	public static Conversations = set of Conversation;

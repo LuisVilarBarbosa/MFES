@@ -1,3 +1,7 @@
+/*
+	Represents any public profile and, among other
+	features, illustrates the usage of 'atomic'.
+*/
 class PublicUser is subclass of User
 types
 	public static Genre = Common`String1;
@@ -17,6 +21,7 @@ instance variables
 	public instruments : Instruments;
 	public description : Common`String;
 	private static allSongs : Songs := {};
+	inv forall s in set songs & s in set allSongs;
 operations
 	public PublicUser : Common`String1 * Common`Address ==> PublicUser
 	PublicUser(stgName, addr) == (
@@ -32,18 +37,22 @@ operations
 	public AddSong : Common`String1 * Common`String1 ==> ()
 	AddSong(n,l) == (
 		dcl s : Song := mk_Song(n,l);
-		songs := songs union {s};
-		allSongs := songs union {s};
+		atomic(
+			songs := songs union {s};
+			allSongs := allSongs union {s};
+		);
 	)
-	pre forall s1 in set songs & s1.link <> l	-- double check
+	pre forall s1 in set songs & s1.link <> l	-- Double check relatively to 'allSongs'.
 		and forall s2 in set allSongs & s2.link <> l
-	post exists1 s1 in set songs & s1.name = n and s1.link = l	-- double check
+	post exists1 s1 in set songs & s1.name = n and s1.link = l
 		and exists1 s2 in set allSongs & s2.name = n and s2.link = l;
 	
 	public RemoveSong : Song ==> ()
 	RemoveSong(s) == (
-		songs := songs \ {s};
-		allSongs := allSongs \ {s};
+		atomic(
+			songs := songs \ {s};
+			allSongs := allSongs \ {s};
+		);
 	)
 	pre s in set songs and s in set allSongs
 	post s not in set songs and songs~ = songs union {s}

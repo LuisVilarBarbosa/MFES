@@ -1,3 +1,4 @@
+/* Represents the public profile of a place. */
 class Place
 types
 	public static Places = set of Place;

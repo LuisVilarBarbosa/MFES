@@ -1,3 +1,4 @@
+/* Represents the public profile of a band. */
 class Band is subclass of PublicUser
 types
 	public static Members = set1 of Artist
@@ -8,6 +9,7 @@ values
 instance variables
 	public members : Members;
 	public static bands : Bands := {};
+	inv forall band in set bands & (forall artist in set band.members & band in set artist.memberOf);
 operations
 	public Band : Common`String1 * Common`Address * Members ==> Band
 	Band(stgName,addr,m) == (

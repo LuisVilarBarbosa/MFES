@@ -1,3 +1,4 @@
+/* Represents a conversation between elements of the class 'User'. */
 class Conversation
 types
 	public static Users = set of User;
@@ -34,7 +35,7 @@ operations
 	)
 	post u in set members and (members~ = members or members~ = members \ {u}) and self in set u.conversations;
 
-	-- If 'members' becomes empty, the conversation is expected to be lost and automatically destroyed by JVM
+	-- If 'members' becomes empty, the conversation is expected to be lost and automatically destroyed by JVM.
 	public RemoveMember : User ==> ()
 	RemoveMember(u) == (
 		if (u in set members) then (
