@@ -4,50 +4,50 @@ types
 	public static Genres = set of Genre;
 	public static Instrument = Common`String1;
 	public static Instruments = set of Instrument;
-	public static Music ::
+	public static Song ::
 		name : Common`String1
 		link : Common`String1;
-	public static Musics = set of Music;
+	public static Songs = set of Song;
 	public static PublicUsers = set of PublicUser;
 values
 instance variables
-	public musics : Musics;
+	public songs : Songs;
 	public address : Common`Address;
 	public genres : Genres;
 	public instruments : Instruments;
 	public description : Common`String;
-	private static allMusics : Musics := {};
+	private static allSongs : Songs := {};
 operations
 	public PublicUser : Common`String1 * Common`Address ==> PublicUser
 	PublicUser(stgName, addr) == (
-		musics := {};
+		songs := {};
 		address := addr;
 		genres := {};
 		instruments := {};
 		description := "";
 		User(stgName);
 	)
-	post musics = {} and address = addr and genres = {} and instruments = {} and description = "";
+	post songs = {} and address = addr and genres = {} and instruments = {} and description = "";
 
-	public AddMusic : Common`String1 * Common`String1 ==> ()
-	AddMusic(n,l) == (
-		dcl m : Music := mk_Music(n,l);
-		musics := musics union {m};
-		allMusics := allMusics union {m};
+	public AddSong : Common`String1 * Common`String1 ==> ()
+	AddSong(n,l) == (
+		dcl s : Song := mk_Song(n,l);
+		songs := songs union {s};
+		allSongs := songs union {s};
 	)
-	pre forall m1 in set musics & m1.link <> l	-- double check
-		and forall m2 in set allMusics & m2.link <> l
-	post exists1 m1 in set musics & m1.name = n and m1.link = l	-- double check
-		and exists1 m2 in set allMusics & m2.name = n and m2.link = l;
+	pre forall s1 in set songs & s1.link <> l	-- double check
+		and forall s2 in set allSongs & s2.link <> l
+	post exists1 s1 in set songs & s1.name = n and s1.link = l	-- double check
+		and exists1 s2 in set allSongs & s2.name = n and s2.link = l;
 	
-	public RemoveMusic : Music ==> ()
-	RemoveMusic(m) == (
-		musics := musics \ {m};
-		allMusics := allMusics \ {m};
+	public RemoveSong : Song ==> ()
+	RemoveSong(s) == (
+		songs := songs \ {s};
+		allSongs := allSongs \ {s};
 	)
-	pre m in set musics and m in set allMusics
-	post m not in set musics and musics~ = musics union {m}
-		and m not in set allMusics and allMusics~ = allMusics union {m};
+	pre s in set songs and s in set allSongs
+	post s not in set songs and songs~ = songs union {s}
+		and s not in set allSongs and allSongs~ = allSongs union {s};
 	
 	public SetAddress : Common`Address ==> ()
 	SetAddress(addr) == address := addr

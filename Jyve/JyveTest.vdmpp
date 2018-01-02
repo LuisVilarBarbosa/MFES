@@ -81,8 +81,8 @@ operations
 		jyveTest.testAddMessageToConversation();
 		IO`println("Success");
 
-		IO`print("testAddRemovePublicUserMusic: ");
-		jyveTest.testAddRemovePublicUserMusic();
+		IO`print("testAddRemovePublicUserSong: ");
+		jyveTest.testAddRemovePublicUserSong();
 		IO`println("Success");
 
 		IO`print("testSetPublicUserAddress: ");
@@ -286,28 +286,28 @@ operations
 	post card privateUser1.conversations = 0;
 
 	/* Tests to methods of PublicUser */
-	private testAddRemovePublicUserMusic : () ==> ()
-	testAddRemovePublicUserMusic() == (
+	private testAddRemovePublicUserSong : () ==> ()
+	testAddRemovePublicUserSong() == (
 		let artist in set privateUser1.myArtists in (
-			dcl name1 : Common`String1 := "Music1";
+			dcl name1 : Common`String1 := "Song1";
 			dcl link1 : Common`String1 := "https://www.youtube.com/watch?v=2tqQcIBhSOE";
-			dcl name2 : Common`String1 := "Music2";
+			dcl name2 : Common`String1 := "Song2";
 			dcl link2 : Common`String1 := "https://www.youtube.com/watch?v=Kq-DsCRVma0";
-			artist.AddMusic(name1,link1);
-			let m1 in set artist.musics in (
-				assertTrue(m1.name = name1 and m1.link = link1);
-				artist.AddMusic(name2,link2);	-- will test if 'link2' has never been used (precondition)
+			artist.AddSong(name1,link1);
+			let s1 in set artist.songs in (
+				assertTrue(s1.name = name1 and s1.link = link1);
+				artist.AddSong(name2,link2);	-- will test if 'link2' has never been used (precondition)
 				--this line should make the test fail: link already used for other music
-				--artist.AddMusic(name1,link1);
-				artist.RemoveMusic(m1);
+				--artist.AddSong(name1,link1);
+				artist.RemoveSong(s1);
 				--this line should make the test fail: non-existent music
-				--artist.RemoveMusic(m1);
-				let m2 in set artist.musics be st (m2.name = name2 and m2.link = link2) in artist.RemoveMusic(m2);
+				--artist.RemoveSong(s1);
+				let s2 in set artist.songs be st (s2.name = name2 and s2.link = link2) in artist.RemoveSong(s2);
 			);
 		);
 	)
-	pre forall artist in set privateUser1.myArtists & card artist.musics = 0
-	post forall artist in set privateUser1.myArtists & card artist.musics = 0;
+	pre forall artist in set privateUser1.myArtists & card artist.songs = 0
+	post forall artist in set privateUser1.myArtists & card artist.songs = 0;
 
 	private testSetPublicUserAddress : () ==> ()
 	testSetPublicUserAddress() == (
