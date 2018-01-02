@@ -7,8 +7,6 @@ instance variables
 	public name : Common`String1;
 	public description : Common`String;
 	public address : Common`Address;
-	public positive_votes : nat;
-	public negative_votes : nat;
 	public static places : Places := {};
 operations
 	public Place : Common`String1 * Common`String * Common`Address ==> Place
@@ -16,12 +14,9 @@ operations
 		name := n;
 		description := desc;
 		address := addr;
-		positive_votes := 0;
-		negative_votes := 0;
 		places := places union {self};
 	)
-	post name = n and description = desc and address = addr and positive_votes = 0
-		and negative_votes = 0 and places~ = places \ {self};
+	post name = n and description = desc and address = addr and places~ = places \ {self};
 
 	public SetName : Common`String1 ==> ()
 	SetName(n) == name := n

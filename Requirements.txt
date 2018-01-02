@@ -20,5 +20,5 @@ R019 - Mandatory - As a private user, I want to know the date of a message.
 R020 - Optional - As a private user, I want to be able to get a link to a song of an artist/band.
 R021 - Mandatory - As a private user, I want to be able to find places where I can listen to music.
 R022 - Mandatory - As a private user, I want to be able to define the public profile of my places.
-R023 - Mandatory - As a private user, I want to be able to see information related to a place and its rating.
+R023 - Mandatory - As a private user, I want to be able to see information related to a place.
 R024 - Mandatory - As a private user, I want to easily go to my artists, bands, places and shows.
