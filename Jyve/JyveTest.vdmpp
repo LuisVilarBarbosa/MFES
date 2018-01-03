@@ -128,12 +128,12 @@ operations
 	/* Constructor */
 	private JyveTest : () ==> JyveTest
 	JyveTest() == (
-		privateUser1 := new PrivateUser(username1,email1,password1);
-		privateUser2 := new PrivateUser(username1,email2,password1);
-		-- The next line should make the test fail: email already used.
-		--dcl privUser1 : PrivateUser := new PrivateUser(username1,email1,password1);
 		-- The next line should make the test fail: password length lower than 8.
-		--dcl privUser1 : PrivateUser := new PrivateUser(username1,email3,password2);
+		--privateUser1 := new PrivateUser(username1,email3,password2);
+		privateUser1 := new PrivateUser(username1,email1,password1);
+		-- The next line should make the test fail: email already used.
+		--privateUser2 := new PrivateUser(username1,email1,password1);
+		privateUser2 := new PrivateUser(username1,email2,password1);
 		assertTrue(privateUser1 <> privateUser2);
 	);
 
