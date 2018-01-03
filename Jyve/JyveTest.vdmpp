@@ -69,8 +69,8 @@ operations
 		jyveTest.testAddRemoveConversation();
 		IO`println("Success");
 
-		IO`print("testAddMemberToConversation: ");
-		jyveTest.testAddMemberToConversation();
+		IO`print("testAddRemoveConversationMember: ");
+		jyveTest.testAddRemoveConversationMember();
 		IO`println("Success");
 
 		IO`print("testSetConversationTopic: ");
@@ -259,8 +259,8 @@ operations
 
 	/* Tests to methods of Conversation */
 	-- Covering requirement R022.
-	private testAddRemoveMemberToConversation : () ==> ()
-	testAddRemoveMemberToConversation() == (
+	private testAddRemoveConversationMember : () ==> ()
+	testAddRemoveConversationMember() == (
 		dcl topic1 : Common`String1 := "Topic";
 		dcl c1 : Conversation := new Conversation(topic1,{privateUser1});
 		c1.AddMember(privateUser2);
