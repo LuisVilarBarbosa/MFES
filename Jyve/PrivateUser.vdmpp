@@ -16,7 +16,7 @@ instance variables
 	public myBands : Band`Bands;
 	public myPlaces : Places;
 	public myShows : Shows;
-	private static privateUsers : PrivateUsers := {};
+	public static privateUsers : PrivateUsers := {};
 operations
 	public PrivateUser : Common`String1 * Email * Password ==> PrivateUser
 	PrivateUser(n,e,pass) == (
