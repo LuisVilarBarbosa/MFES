@@ -130,18 +130,19 @@ operations
 	JyveTest() == (
 		privateUser1 := new PrivateUser(username1,email1,password1);
 		privateUser2 := new PrivateUser(username1,email2,password1);
-		--this line should make the test fail: email already used
+		-- The next line should make the test fail: email already used.
 		--dcl privUser1 : PrivateUser := new PrivateUser(username1,email1,password1);
-		--this line should make the test fail: password length less than 8
+		-- The next line should make the test fail: password length lower than 8.
 		--dcl privUser1 : PrivateUser := new PrivateUser(username1,email3,password2);
 		assertTrue(privateUser1 <> privateUser2);
 	);
 
 
-	/* Tests to methods of PrivateUser */	
+	/* Tests to methods of PrivateUser */
+	-- Covering requirement R001.
 	private testCreateArtist : () ==> ()
 	testCreateArtist() == (
-		--this three artists are used on other tests
+		-- This three artists are used on other tests.
 		privateUser1.CreateArtist(artistName1,address1);
 		privateUser1.CreateArtist(artistName2,address1);
 		privateUser1.CreateArtist(artistName3,address1);
@@ -149,43 +150,46 @@ operations
 	pre card privateUser1.myArtists = 0
 	post card privateUser1.myArtists = 3;
 
+	-- Covering requirement R007.
 	private testCreateBand : () ==> ()
 	testCreateBand() == (
 		privateUser1.CreateBand(bandName1,address1,privateUser1.myArtists);
-		--this line should make the test fail: the same artist in a set that must have at least two distict artists
+		-- The next line should make the test fail: the same artist in a set that must have at least two distict artists.
 		--let artist1 in set Artist`artists in privateUser1.CreateBand(bandName2,address1,{artist1,artist1});
 	)
-	pre card privateUser1.myArtists = 3	-- this is the expected length, but it can have 2 or more elements
+	pre card privateUser1.myArtists = 3	-- This is the expected length, but it can have 2 or more elements.
 		and card privateUser1.myBands = 0
 	post card privateUser1.myBands = 1;
-	
+
 	private testSetPrivateUserPassword : () ==> ()
 	testSetPrivateUserPassword() == (
 		dcl oldPass : PrivateUser`Password := privateUser1.password;
 		dcl newPass : PrivateUser`Password := "123456789";
 		privateUser1.SetPassword(newPass);
 		assertEqual(newPass,privateUser1.password);
-		--this line should make the test fail: password length less than 8
+		-- The next line should make the test fail: password length lower than 8.
 		--privateUser1.SetPassword(password2);
 		privateUser1.SetPassword(oldPass);
 	)
 	post privateUser1~.password = privateUser1.password;
 
+	-- Covering requirement R022.
 	private testCreateRemovePlace : () ==> ()
 	testCreateRemovePlace() == (
 		privateUser1.CreatePlace("FEUP","",address1);
-		--this line should make the test fail: empty name
+		-- The next line should make the test fail: empty name.
 		--privateUser1.CreatePlace("","",address1);
 
 		let p in set privateUser1.myPlaces in (
 			privateUser1.RemovePlace(p);
-			--this line should make the test fail: non-existent place
+			-- The next line should make the test fail: non-existent place.
 			--privateUser1.RemovePlace(p);
 		);
 	)
 	pre card privateUser1.myPlaces = 0
 	post card privateUser1.myPlaces = 0;
 
+	-- Covering requirement R014.
 	private testCreateRemoveShow : () ==> ()
 	testCreateRemoveShow() == (
 		dcl date1 : Common`Date := Common`CreateDate(2016,2,29,0,0);
@@ -194,19 +198,19 @@ operations
 		let place in set privateUser1.myPlaces in (
 			privateUser1.CreateShow("MFES show1",privateUser1.myArtists,date2,date2,place,"");
 			privateUser1.CreateShow("MFES show2",privateUser1.myBands,date1,date2,place,"");
-			--this line should make the test fail: end date before start date
+			-- The next line should make the test fail: end date before start date.
 			--let artist1, artist2 in set Artist`artists be st artist1 <> artist2 in privateUser1.CreateShow("MFES show",{artist1,artist2},date2,date1,place,"");
-			privateUser1.RemovePlace(place);	-- the place can still exist associated to shows, but it is not 'active' and will not appear anywhere else
+			privateUser1.RemovePlace(place);	-- The place can still exist associated to shows, but it is not 'active' and will not appear anywhere else.
 		);
 
 		let show in set privateUser1.myShows in (
 			privateUser1.RemoveShow(show);
-			--this line should make the test fail: non-existent show
+			-- The next line should make the test fail: non-existent show.
 			--privateUser1.RemoveShow(show);
 		);
 		let show in set privateUser1.myShows in privateUser1.RemoveShow(show);
 	)
-	pre card privateUser1.myArtists = 3	-- this is the expected length, but it can have 1 or more elements
+	pre card privateUser1.myArtists = 3	-- This is the expected length, but it can have 1 or more elements.
 		and card privateUser1.myBands = 1
 		and card privateUser1.myPlaces = 0
 		and card privateUser1.myShows = 0
@@ -219,11 +223,12 @@ operations
 		dcl privUser3 : [PrivateUser] := PrivateUser`GetPrivateUser(email4,password1);
 		assertEqual(privUser1,privateUser1);
 		assertEqual(privUser2,privateUser2);
-		assertEqual(privUser3,nil);	-- non-existent private user
+		assertEqual(privUser3,nil);	-- Non-existent private user.
 	);
 
 
 	/* Tests to methods of User */
+	-- Covering requirements R001 and R007.
 	private testSetUserName : () ==> ()
 	testSetUserName() == (
 		dcl oldName : Common`String1 := privateUser1.name;
@@ -234,6 +239,7 @@ operations
 	pre privateUser1.name <> username2
 	post privateUser1~.name = privateUser1.name;
 
+	-- Covering requirements R016, R017 and R018.
 	private testAddRemoveConversation : () ==> ()
 	testAddRemoveConversation() == (
 		dcl members : Conversation`Users := {privateUser1};
@@ -273,6 +279,7 @@ operations
 	pre card privateUser1.conversations = 0
 	post card privateUser1.conversations = 0;
 
+	-- Covering requirements R016, R017 and R018.
 	private testAddMessageToConversation : () ==> ()
 	testAddMessageToConversation() == (
 		dcl date : Common`Date := Common`CreateDate(2017,12,30,0,0);
@@ -296,11 +303,11 @@ operations
 			artist.AddSong(name1,link1);
 			let s1 in set artist.songs in (
 				assertTrue(s1.name = name1 and s1.link = link1);
-				artist.AddSong(name2,link2);	-- will test if 'link2' has never been used (precondition)
-				--this line should make the test fail: link already used for other music
+				artist.AddSong(name2,link2);	-- Will test if 'link2' has never been used (precondition).
+				-- The next line should make the test fail: link already used for other song.
 				--artist.AddSong(name1,link1);
 				artist.RemoveSong(s1);
-				--this line should make the test fail: non-existent music
+				-- The next line should make the test fail: non-existent song.
 				--artist.RemoveSong(s1);
 				let s2 in set artist.songs be st (s2.name = name2 and s2.link = link2) in artist.RemoveSong(s2);
 			);
@@ -309,6 +316,7 @@ operations
 	pre forall artist in set privateUser1.myArtists & card artist.songs = 0
 	post forall artist in set privateUser1.myArtists & card artist.songs = 0;
 
+	-- Covering requirements R001 and R007.
 	private testSetPublicUserAddress : () ==> ()
 	testSetPublicUserAddress() == (
 		let artist in set privateUser1.myArtists in (
@@ -320,6 +328,7 @@ operations
 		);
 	);
 
+	-- Covering requirements R001 and R007.
 	private testAddRemovePublicUserGenre : () ==> ()
 	testAddRemovePublicUserGenre() == (
 		let artist in set privateUser1.myArtists in (
@@ -327,10 +336,10 @@ operations
 			artist.AddGenre(testGenre);
 			let g in set artist.genres in (
 				assertEqual(g,testGenre);
-				--this line should make the test fail: genre already added
+				-- The next line should make the test fail: genre already added.
 				--artist.AddGenre(testGenre);
 				artist.RemoveGenre(g);
-				--this line should make the test fail: non-existent genre
+				-- The next line should make the test fail: non-existent genre.
 				--artist.RemoveGenre(g);
 			);
 		);
@@ -338,6 +347,7 @@ operations
 	pre forall artist in set privateUser1.myArtists & card artist.genres = 0
 	post forall artist in set privateUser1.myArtists & card artist.genres = 0;
 
+	-- Covering requirements R001 and R007.
 	private testAddRemovePublicUserInstrument : () ==> ()
 	testAddRemovePublicUserInstrument() == (
 		let artist in set privateUser1.myArtists in (
@@ -345,10 +355,10 @@ operations
 			artist.AddInstrument(testInstrument);
 			let i in set artist.instruments in (
 				assertEqual(i,testInstrument);
-				--this line should make the test fail: link already used for other music
+				-- The next line should make the test fail: link already used for other instrument.
 				--artist.AddInstrument(testInstrument);
 				artist.RemoveInstrument(i);
-				--this line should make the test fail: non-existent music
+				-- The next line should make the test fail: non-existent instrument.
 				--artist.RemoveInstrument(i);
 			);
 		);
@@ -356,6 +366,7 @@ operations
 	pre forall artist in set privateUser1.myArtists & card artist.instruments = 0
 	post forall artist in set privateUser1.myArtists & card artist.instruments = 0;
 
+	-- Covering requirements R001 and R007.
 	private testSetPublicUserDescription : () ==> ()
 	testSetPublicUserDescription() == (
 		let artist in set privateUser1.myArtists in (
@@ -368,6 +379,7 @@ operations
 		);
 	);
 
+	-- Covering requirements R002 and R008.
 	private testGetPublicUsers : () ==> ()
 	testGetPublicUsers() == (
 		privateUser1.CreateArtist(specialArtistName1,address1);
@@ -379,6 +391,7 @@ operations
 
 
 	/* Tests to methods of Place */
+	-- Covering requirement R022.
 	private testSetPlaceName : () ==> ()
 	testSetPlaceName() == (
 		privateUser1.CreatePlace("FEUP","",address1);
@@ -392,6 +405,7 @@ operations
 	pre card privateUser1.myPlaces = 0
 	post card privateUser1.myPlaces = 0;
 
+	-- Covering requirement R022.
 	private testSetPlaceDescription: () ==> ()
 	testSetPlaceDescription() == (
 		privateUser1.CreatePlace("FEUP","",address1);
@@ -407,11 +421,14 @@ operations
 
 
 	/* Tests to methods of Calendar */
+	-- Covering requirement R013.	
 	private testGetShowsSortedByStartDate : () ==> ()
 	testGetShowsSortedByStartDate() == (
 		testGetShowsSortedByStartDateAux1();
 		testGetShowsSortedByStartDateAux2();
-	);
+	)
+	pre card privateUser1.myPlaces = 0 and card privateUser1.myShows = 0
+	post card privateUser1.myPlaces = 0 and card privateUser1.myShows = 0;
 
 	private testGetShowsSortedByStartDateAux1 : () ==> ()
 	testGetShowsSortedByStartDateAux1() == (
@@ -438,8 +455,7 @@ operations
 
 		while(card privateUser1.myShows > 0) do
 			let show in set privateUser1.myShows in privateUser1.RemoveShow(show);
-	)
-	post card privateUser1.myPlaces = 0 and card privateUser1.myShows = 0;
+	);
 
 
 	/* Tests to methods of Common */
@@ -450,15 +466,15 @@ operations
 		dates := dates union {Common`CreateDate(2017,2,28,23,0)};
 		dates := dates union {Common`CreateDate(2016,11,30,23,0)};
 		dates := dates union {Common`CreateDate(2016,12,31,23,59)};
-		--this line should make the test fail: not leap year
+		-- The next line should make the test fail: not leap year.
 		--dates := dates union {Common`CreateDate(2017,2,29,23,0)};
-		--this line should make the test fail: month 11 does not have 31 days
+		-- The next line should make the test fail: month 11 does not have 31 days.
 		--dates := dates union {Common`CreateDate(2016,11,31,23,0)};
-		--this line should make the test fail: there is no month with 32 days
+		-- The next line should make the test fail: there is no month with 32 days.
 		--dates := dates union {Common`CreateDate(2016,12,32,23,0)};
-		--this line should make the test fail: hour 24 does not exist
+		-- The next line should make the test fail: hour 24 does not exist.
 		--dates := dates union {Common`CreateDate(2016,11,30,24,0)};
-		--this line should make the test fail: minute 60 does not exist
+		-- The next line should make the test fail: minute 60 does not exist.
 		--dates := dates union {Common`CreateDate(2016,11,30,23,60)};
 		assertEqual(dates,dates);
 	);

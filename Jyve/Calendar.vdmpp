@@ -26,7 +26,7 @@ operations
 	pre s in set shows
 	post s not in set shows and shows~ = shows union {s};
 	
-	-- Get shows ordered by start date (based on selection sort: https://www.geeksforgeeks.org/selection-sort/)
+	-- Get shows ordered by start date (based on selection sort: https://www.geeksforgeeks.org/selection-sort/).
 	public static GetShowsSortedByStartDate : () ==> Shows
 	GetShowsSortedByStartDate() == (
 		dcl newShows : Shows := [];

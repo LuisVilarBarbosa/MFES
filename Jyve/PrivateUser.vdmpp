@@ -29,14 +29,14 @@ operations
 		privateUsers := privateUsers union {self};
 		User(n);
 	)
-	pre len pass >= minLength and forall u in set privateUsers & u.email <> e	-- invariant verification on 'pass'
-	post email = e and password = pass and myArtists = {} and myBands = {} and myPlaces = {}  -- invariant verification on 'pass' by verifying that the assignment is correct (already passed precondition)
+	pre len pass >= minLength and forall u in set privateUsers & u.email <> e	-- Verification of the invariant on 'pass'.
+	post email = e and password = pass and myArtists = {} and myBands = {} and myPlaces = {}  -- Verification of the invariant on 'pass' by verifying that the assignment is correct (already passed precondition).
 		and myShows = {} and self in set privateUsers;
 
 	public SetPassword : Password ==> ()
 	SetPassword(p) == password := p
-	pre len p >= minLength -- invariant verification
-	post password = p; -- invariant verification by verifying that the assignment is correct (already passed precondition)
+	pre len p >= minLength -- Verification of the invariant.
+	post password = p; -- Verification of the invariant by verifying that the assignment is correct (already passed precondition).
 
 	public CreateArtist : Common`String1 * Common`Address ==> ()
 	CreateArtist(n,addr) == myArtists := myArtists union {new Artist(n,addr)}
@@ -81,8 +81,8 @@ operations
 				return u;
 		return nil;
 	)
-	pre len p >= minLength	 -- invariant verification
-	post RESULT = nil or (RESULT in set privateUsers and RESULT.email = e and RESULT.password = p); -- invariant verification by comparing the result with the input (already passed precondition)
+	pre len p >= minLength	-- Verification of the invariant.
+	post RESULT = nil or (RESULT in set privateUsers and RESULT.email = e and RESULT.password = p); -- Verification of the invariant by comparing the result with the input (already passed precondition).
 functions
 traces
 end PrivateUser

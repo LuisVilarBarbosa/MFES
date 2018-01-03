@@ -19,8 +19,8 @@ operations
 		bands := bands union {self};
 		PublicUser(stgName,addr);
 	)
-	pre card m >= minMembers	-- invariant verification
-	post members = m	-- invariant verification by verifying that the assignment is correct (already passed precondition)
+	pre card m >= minMembers	-- Verification of the invariant.
+	post members = m	-- Verification of the invariant by verifying that the assignment is correct (already passed precondition).
 		and forall member in set members & self in set member.memberOf
 		and self in set bands;
 functions
