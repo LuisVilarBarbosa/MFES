@@ -1,24 +1,28 @@
-R001 - Mandatory - As a private user, I want to be able to define the public profile of my artists.
-R002 - Mandatory - As a private user, I want to be able to find artists.
-R003 - Mandatory - As a private user, I want to be able to see the public profiles of artists.
-R004 - Mandatory - As a private user, I want to be able to find the band(s) of an artist.
-R005 - Optional - As a private user, I want to be able to find the genders of an artist.
-R006 - Optional - As a private user, I want to be able to find the instruments that an artist plays.
-R007 - Mandatory - As a private user, I want to be able to define the public profile of my bands.
-R008 - Mandatory - As a private user, I want to be able to find bands.
-R009 - Mandatory - As a private user, I want to be able to see the public profiles of bands.
-R010 - Mandatory - As a private user, I want to be able to find the members of a band.
-R011 - Optional - As a private user, I want to be able to find the genders of a band.
-R012 - Optional - As a private user, I want to be able to find the instruments that a band plays.
-R013 - Mandatory - As a private user, I want to be able to access a calendar with the shows already scheduled.
-R014 - Mandatory - As a private user, I want to be able to create shows.
-R015 - Mandatory - As a private user, I want to be able to find shows and know some information about them as the performers, date, description and address.
-R016 - Mandatory - As a private user, I want to be able to have a conversation with other users (private users, artists and bands).
-R017 - Mandatory - As an artist, I want to be able to have a conversation with other users (private users, artists and bands).
-R018 - Mandatory - As a band, I want to be able to have a conversation with other users (private users, artists and bands).
-R019 - Mandatory - As a private user, I want to know the date of a message.
-R020 - Optional - As a private user, I want to be able to get a link to a song of an artist/band.
-R021 - Mandatory - As a private user, I want to be able to find places where I can listen to music.
-R022 - Mandatory - As a private user, I want to be able to define the public profile of my places.
-R023 - Mandatory - As a private user, I want to be able to see information related to a place.
-R024 - Mandatory - As a private user, I want to easily go to my artists, bands, places and shows.
+R001 - Mandatory - As an external user/guest, I want to be able to register.
+R002 - Mandatory - As an external user/guest, I want to be able to login.
+R003 - Mandatory - As a private user, I want to be able to define the public profile of my artists.
+R004 - Mandatory - As a private user, I want to be able to find artists.
+R005 - Mandatory - As a private user, I want to be able to see the public profiles of artists.
+R006 - Mandatory - As a private user, I want to be able to find the band(s) of an artist.
+R007 - Optional - As a private user, I want to be able to find the genders of an artist.
+R008 - Optional - As a private user, I want to be able to find the instruments that an artist plays.
+R009 - Mandatory - As a private user, I want to be able to define the public profile of my bands.
+R010 - Mandatory - As a private user, I want to be able to find bands.
+R011 - Mandatory - As a private user, I want to be able to see the public profiles of bands.
+R012 - Mandatory - As a private user, I want to be able to find the members of a band.
+R013 - Optional - As a private user, I want to be able to find the genders of a band.
+R014 - Optional - As a private user, I want to be able to find the instruments that a band plays.
+R015 - Mandatory - As a private user, I want to be able to access a calendar with the shows already scheduled.
+R016 - Mandatory - As a private user, I want to be able to announce shows.
+R017 - Mandatory - As a private user, I want to be able to find shows and know some information about them as the performers, date, description and address.
+R018 - Mandatory - As a private user, I want to be able to have a conversation with other users (private users, artists and bands).
+R019 - Mandatory - As an artist, I want to be able to have a conversation with other users (private users, artists and bands).
+R020 - Mandatory - As a band, I want to be able to have a conversation with other users (private users, artists and bands).
+R021 - Mandatory - As a private user, I want to know the date of a message.
+R022 - Mandatory - As a private user, I want to be able to change the members and the topic of a conversation.
+R023 - Optional - As a private user, I want to be able to get a link to a song of an artist/band.
+R024 - Mandatory - As a private user, I want to be able to find places where I can listen to music.
+R025 - Mandatory - As a private user, I want to be able to define the public profile of my places.
+R026 - Mandatory - As a private user, I want to be able to see information related to a place.
+R027 - Mandatory - As a private user, I want to easily go to my artists, bands, places and shows.
+R028 - Mandatory - As a private user, I want to be able to change my password and name.
