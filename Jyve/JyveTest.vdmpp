@@ -4,6 +4,9 @@ class JyveTest is subclass of MyTestCase
  The test cases cover all usage scenarios,
  merging the creations and deletions in the
  same test to maintain tests integrity.
+ Some tests verify if the variables aren't
+ 'undefined' to assure that the interface
+ can access the variables to show the information.
 */
 types
 values
