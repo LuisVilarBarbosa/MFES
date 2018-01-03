@@ -126,7 +126,7 @@ operations
 
 
 	/* Constructor */
-	-- Covering requirement R001.
+	-- Covering requirements R001 and R027.
 	private JyveTest : () ==> JyveTest
 	JyveTest() == (
 		-- The next line should make the test fail: password length lower than 8.
@@ -136,27 +136,58 @@ operations
 		--privateUser2 := new PrivateUser(username1,email1,password1);
 		privateUser2 := new PrivateUser(username1,email2,password1);
 		assertTrue(privateUser1 <> privateUser2);
+
+		-- Verifying that the variables are defined so that they can be accessed to get information:
+		assertTrue(undefined <> privateUser1.email);
+		assertTrue(undefined <> privateUser1.password);
+		assertTrue(undefined <> privateUser1.myArtists);
+		assertTrue(undefined <> privateUser1.myBands);
+		assertTrue(undefined <> privateUser1.myPlaces);
+		assertTrue(undefined <> privateUser1.myShows);
+		assertTrue(undefined <> privateUser1.privateUsers);
 	);
 
 
 	/* Tests to methods of PrivateUser */
-	-- Covering requirement R003.
+	-- Covering requirements R003, R005, R006, R007, R008 and R023.
 	private testCreateArtist : () ==> ()
 	testCreateArtist() == (
 		-- This three artists are used on other tests.
 		privateUser1.CreateArtist(artistName1,address1);
 		privateUser1.CreateArtist(artistName2,address1);
 		privateUser1.CreateArtist(artistName3,address1);
+
+		-- Verifying that the variables are defined so that they can be accessed to get information:
+		let a in set privateUser1.myArtists be st a.name = artistName1 in (
+			assertTrue(undefined <> a.songs);
+			assertTrue(undefined <> a.address);
+			assertTrue(undefined <> a.genres);
+			assertTrue(undefined <> a.instruments);
+			assertTrue(undefined <> a.description);
+			assertTrue(undefined <> a.memberOf);
+			assertTrue(undefined <> a.artists);
+		);
 	)
 	pre card privateUser1.myArtists = 0
 	post card privateUser1.myArtists = 3;
 
-	-- Covering requirement R009.
+	-- Covering requirements R009, R011, R012, R013, R014 and R023.
 	private testCreateBand : () ==> ()
 	testCreateBand() == (
 		privateUser1.CreateBand(bandName1,address1,privateUser1.myArtists);
 		-- The next line should make the test fail: the same artist in a set that must have at least two distict artists.
 		--let artist1 in set Artist`artists in privateUser1.CreateBand(bandName2,address1,{artist1,artist1});
+
+		-- Verifying that the variables are defined so that they can be accessed to get information:
+		let b in set privateUser1.myBands be st b.name = bandName1 in (
+			assertTrue(undefined <> b.songs);
+			assertTrue(undefined <> b.address);
+			assertTrue(undefined <> b.genres);
+			assertTrue(undefined <> b.instruments);
+			assertTrue(undefined <> b.description);
+			assertTrue(undefined <> b.members);
+			assertTrue(undefined <> b.bands);
+		);
 	)
 	pre card privateUser1.myArtists = 3	-- This is the expected length, but it can have 2 or more elements.
 		and card privateUser1.myBands = 0
@@ -175,12 +206,20 @@ operations
 	)
 	post privateUser1~.password = privateUser1.password;
 
-	-- Covering requirement R025.
+	-- Covering requirement R024, R025 and R026.
 	private testCreateRemovePlace : () ==> ()
 	testCreateRemovePlace() == (
 		privateUser1.CreatePlace("FEUP","",address1);
 		-- The next line should make the test fail: empty name.
 		--privateUser1.CreatePlace("","",address1);
+
+		-- Verifying that the variables are defined so that they can be accessed to get information:
+		let p in set privateUser1.myPlaces in (
+			assertTrue(undefined <> p.name);
+			assertTrue(undefined <> p.description);
+			assertTrue(undefined <> p.address);
+			assertTrue(undefined <> p.places);
+		);
 
 		let p in set privateUser1.myPlaces in (
 			privateUser1.RemovePlace(p);
@@ -191,17 +230,30 @@ operations
 	pre card privateUser1.myPlaces = 0
 	post card privateUser1.myPlaces = 0;
 
-	-- Covering requirement R016.
+	-- Covering requirements R016 and R017.
 	private testCreateRemoveShow : () ==> ()
 	testCreateRemoveShow() == (
 		dcl date1 : Common`Date := Common`CreateDate(2016,2,29,0,0);
 		dcl date2 : Common`Date := Common`CreateDate(2017,12,30,0,0);
 		privateUser1.CreatePlace("FEUP","",address1);
 		let place in set privateUser1.myPlaces in (
-			privateUser1.CreateShow("MFES show1",privateUser1.myArtists,date2,date2,place,"");
-			privateUser1.CreateShow("MFES show2",privateUser1.myBands,date1,date2,place,"");
+			dcl name1 : Common`String1 := "MFES show1";
+			dcl name2 : Common`String1 := "MFES show2";
+			privateUser1.CreateShow(name1,privateUser1.myArtists,date2,date2,place,"");
+			privateUser1.CreateShow(name2,privateUser1.myBands,date1,date2,place,"");
 			-- The next line should make the test fail: end date before start date.
 			--let artist1, artist2 in set Artist`artists be st artist1 <> artist2 in privateUser1.CreateShow("MFES show",{artist1,artist2},date2,date1,place,"");
+			
+			-- Verifying that the variables are defined so that they can be accessed to get information:
+			let s in set privateUser1.myShows be st s.name = name1 in (
+				assertTrue(undefined <> s.name);
+				assertTrue(undefined <> s.performers);
+				assertTrue(undefined <> s.startDate);
+				assertTrue(undefined <> s.endDate);
+				assertTrue(undefined <> s.place);
+				assertTrue(undefined <> s.description);
+			);
+			
 			privateUser1.RemovePlace(place);	-- The place can still exist associated to shows, but it is not 'active' and will not appear anywhere else.
 		);
 
@@ -284,7 +336,7 @@ operations
 	pre card privateUser1.conversations = 0
 	post card privateUser1.conversations = 0;
 
-	-- Covering requirements R018, R019 and R020.
+	-- Covering requirements R018, R019, R020 and R021.
 	private testAddMessageToConversation : () ==> ()
 	testAddMessageToConversation() == (
 		dcl date : Common`Date := Common`CreateDate(2017,12,30,0,0);
@@ -427,7 +479,7 @@ operations
 
 
 	/* Tests to methods of Calendar */
-	-- Covering requirement R015.	
+	-- Covering requirements R015 and R017.	
 	private testGetShowsSortedByStartDate : () ==> ()
 	testGetShowsSortedByStartDate() == (
 		testGetShowsSortedByStartDateAux1();
