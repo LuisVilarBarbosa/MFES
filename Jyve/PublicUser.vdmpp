@@ -45,7 +45,8 @@ operations
 	pre forall s1 in set songs & s1.link <> l	-- Double check relatively to 'allSongs'.
 		and forall s2 in set allSongs & s2.link <> l
 	post exists1 s1 in set songs & s1.name = n and s1.link = l
-		and exists1 s2 in set allSongs & s2.name = n and s2.link = l;
+		and exists1 s2 in set allSongs & s2.name = n and s2.link = l
+		and s1 = s2;
 	
 	public RemoveSong : Song ==> ()
 	RemoveSong(s) == (
