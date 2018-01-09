@@ -1,10 +1,10 @@
-package Jyve;
+package MFES;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import org.overture.codegen.runtime.*;
 
-import Jyve.Conversation.Message;
+import MFES.Conversation.Message;
 
 @SuppressWarnings("all")
 public class Interface {
